@@ -4,11 +4,27 @@
       xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>Facelet Title</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
     <h:body>
         Hello from Facelets
         <br />
         <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+        <br />
+        <h:link outcome="/admin/curso/List" value="Show All Curso Items"/>
+        <br />
+        <h:link outcome="/admin/perfil/List" value="Show All Perfil Items"/>
+        <br />
+        <h:link outcome="/admin/perfilPersona/List" value="Show All PerfilPersona Items"/>
+        <br />
+        <h:link outcome="/admin/persona/List" value="Show All Persona Items"/>
+        <br />
+        <h:link outcome="/admin/personaCurso/List" value="Show All PersonaCurso Items"/>
     </h:body>
+
+
+
+
+
 </html>
 
