@@ -56,8 +56,8 @@ public class CursoController implements Serializable {
         }
         return current;
     }
-    
-    public void setSelected(Curso curso){
+
+    public void setSelected(Curso curso) {
         current = curso;
     }
 
@@ -82,8 +82,6 @@ public class CursoController implements Serializable {
         }
         return pagination;
     }
-    
-    
 
     public String prepareList() {
         recreateModel();
@@ -95,7 +93,7 @@ public class CursoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
     public String prepareRegister() {
         FacesContext context = FacesContext.getCurrentInstance();
         int idCurso = context.getExternalContext().getRequestParameterMap().get("idCurso") != null ? Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("idCurso")) : -1;
@@ -112,7 +110,7 @@ public class CursoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-    
+
     public String prepareMessage() {
         return "message";
     }
@@ -122,25 +120,25 @@ public class CursoController implements Serializable {
             //current = (Curso)getItems().getRowData();
             Persona persona = new Persona();
             PersonaCurso personaCurso = new PersonaCurso();
-            
+
             //Se setean los Datos de la Persona
             persona.setNombre(getNombre());
             persona.setApellido(getApellido());
             persona.setEmail(getEmail());
-            
+
             //Se crea la Persona
             ejbPersonaFacade.create(persona);
-            
+
             //Se setean los Datos de la relación Curso-Persona
             current = ejbFacade.find(idSelectedCurso);
             personaCurso.setCursoId(current);
             personaCurso.setPersonaId(persona);
             personaCurso.setStatus(JpaUtilities.PENDIENTE);
             personaCurso.setFecha(new Date());
-            
+
             //Se guarda la Relación Curso-Persona
             ejbPersonaCursoFacade.create(personaCurso);
-            
+
             recreateModel();
             JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
             return prepareMessage();
@@ -149,7 +147,7 @@ public class CursoController implements Serializable {
             return null;
         }
     }
-    
+
     public String create() {
         try {
             getFacade().create(current);
@@ -226,12 +224,13 @@ public class CursoController implements Serializable {
 
     /**
      * Modificación del DataModel para mostrar la Lista en PrimeFaces
-     * @return 
+     *
+     * @return
      */
     public DataModel getItems() {
         //recreateModel();
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());   
+            items = new ListDataModel(getFacade().findAll());
         }
         return items;
     }
@@ -240,7 +239,7 @@ public class CursoController implements Serializable {
         items = null;
         nombre = null;
         apellido = null;
-        email = null;  
+        email = null;
     }
 
     private void recreatePagination() {
@@ -301,12 +300,15 @@ public class CursoController implements Serializable {
 
     public List<Curso> getListCurso() {
         listCurso = null;
-        if(listCurso == null){
+        int capacidad = 0;
+        int inscritos = 0;
+        int totalDisponible = 0;
+        if (listCurso == null) {
             listCurso = ejbFacade.findAll();
             for (Curso option : listCurso) {
-                int capacidad = option.getCapacidad();
-                int inscritos = ejbPersonaCursoFacadeExt.findCuposDisponibles(option);
-                int totalDisponible = capacidad - inscritos;
+                capacidad = option.getCapacidad();
+                inscritos = ejbPersonaCursoFacadeExt.findInscritos(option);
+                totalDisponible = capacidad - inscritos;
                 option.setTotalDisponible(totalDisponible);
             }
         }

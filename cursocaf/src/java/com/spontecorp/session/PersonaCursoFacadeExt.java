@@ -31,9 +31,15 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
         super(PersonaCurso.class);
     }
 
-    public int findCuposDisponibles(Curso curso) {
+    /**
+     * Cantidad de Inscritos cuyo Status sea PENDIENTE = 1 o INSCRITO = 2
+     * Este resultado se usa para Calcular los Cupos Disponibles en un Curso determinado
+     * @param curso
+     * @return 
+     */
+    public int findInscritos(Curso curso) {
         String query = "SELECT pc from PersonaCurso pc WHERE pc.cursoId = :curso and "
-                + "pc.status = " + JpaUtilities.ACTIVO;
+                + "(pc.status = " + JpaUtilities.INSCRITO + " OR pc.status = " + JpaUtilities.PENDIENTE + ")" ;
         Query q = getEntityManager().createQuery(query);
         q.setParameter("curso", curso);
         return q.getResultList().size();
