@@ -63,6 +63,7 @@ public class Curso implements Serializable {
     private Integer status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cursoId")
     private List<PersonaCurso> personaCursoList;
+    private transient int totalDisponible;
 
     public Curso() {
     }
@@ -133,6 +134,14 @@ public class Curso implements Serializable {
 
     public void setPersonaCursoList(List<PersonaCurso> personaCursoList) {
         this.personaCursoList = personaCursoList;
+    }
+
+    public int getTotalDisponible() {
+        return totalDisponible;
+    }
+
+    public void setTotalDisponible(int totalDisponible) {
+        this.totalDisponible = totalDisponible;
     }
 
     @Override

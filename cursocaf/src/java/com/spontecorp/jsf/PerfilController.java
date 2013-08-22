@@ -82,7 +82,7 @@ public class PerfilController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("PerfilCreated"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/resources/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -99,7 +99,7 @@ public class PerfilController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("PerfilUpdated"));
-            return "View";
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/resources/Bundle").getString("PersistenceErrorOccured"));
             return null;

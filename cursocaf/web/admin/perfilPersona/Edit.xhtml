@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -14,27 +15,37 @@
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditPerfilPersonaLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{perfilPersonaController.selected.id}" title="#{bundle.EditPerfilPersonaTitle_id}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_id}"/>
-                    <h:outputLabel value="#{bundle.EditPerfilPersonaLabel_personaId}" for="personaId" />
-                    <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.EditPerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_personaId}">
-                        <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundle.EditPerfilPersonaLabel_perfilId}" for="perfilId" />
-                    <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" title="#{bundle.EditPerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_perfilId}">
-                        <f:selectItems value="#{perfilController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandLink action="#{perfilPersonaController.update}" value="#{bundle.EditPerfilPersonaSaveLink}"/>
-                <br />
-                <br />
-                <h:link outcome="View" value="#{bundle.EditPerfilPersonaViewLink}"/>
-                <br />
-                <h:commandLink action="#{perfilPersonaController.prepareList}" value="#{bundle.EditPerfilPersonaShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.EditPerfilPersonaIndexLink}" />
+                <p:panel id="panel" header="Editar Perfil Persona" style="width: 40%; margin-left: 30%; margin-right: 30%">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Persona" for="personaId" />
+                        <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.EditPerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_personaId}">
+                            <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <p:message for="personaId"/>
+                        <p:outputLabel value="Perfil" for="perfilId" />
+                        <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" title="#{bundle.EditPerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_perfilId}">
+                            <f:selectItems value="#{perfilController.itemsAvailableSelectOne}"/>
+                        </h:selectOneMenu>
+                        <p:message for="perfilId"/>
+                    </h:panelGrid>
+                    <f:facet name="footer">
+                        <h:panelGrid columns="3">
+                            <p:commandButton value="Guardar" 
+                                             action="#{perfilPersonaController.update}"
+                                             ajax="true" update="panel"
+                                             icon="ui-icon-disk"/>
+                            <p:spacer width="20"/>
+                            <p:commandButton value="Cancelar" 
+                                             action="#{perfilPersonaController.prepareList}"
+                                             immediate="true"
+                                             icon="ui-icon-cancel"/>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:panel>
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+
             </h:form>
         </ui:define>
     </ui:composition>

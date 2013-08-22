@@ -43,13 +43,16 @@
                     </h:outputText>
                 </p:column>
                 <p:column headerText="Descripción" >
-                    <h:outputText value="#{item.id}"/>
+                    <h:outputText value="#{item.descripcion}"/>
                 </p:column>
                 <p:column headerText="Lugar" >
                     <h:outputText value="#{item.lugar}"/>
                 </p:column>
-                <p:column headerText="Capacidad" style="text-align: center">
+<!--                <p:column headerText="Capacidad" style="text-align: center">
                     <h:outputText value="#{item.capacidad}"/>
+                </p:column>-->
+                <p:column headerText="Disponibles" style="text-align: center">
+                    <h:outputText value="#{item.totalDisponible}"/>
                 </p:column>
                 <p:column headerText="Status" style="text-align: center">
 
