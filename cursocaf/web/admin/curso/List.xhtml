@@ -42,7 +42,9 @@
                         <h:outputText value="Activo" rendered="#{item.status==1}" />
                         <h:outputText value="Inactivo" rendered="#{item.status==0}" />
                     </p:column>
-                    
+                    <p:column headerText="Acción" width="10%">
+                        <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{cursoController.prepareEdit}"/>
+                    </p:column>
                 </p:dataTable>
 
 

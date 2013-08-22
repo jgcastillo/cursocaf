@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -11,62 +12,33 @@
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListPersonaEmpty}" rendered="#{personaController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{personaController.items.rowCount > 0}">
-                    <h:outputText value="#{personaController.pagination.pageFirstItem + 1}..#{personaController.pagination.pageLastItem + 1}/#{personaController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{personaController.previous}" value="#{bundle.Previous} #{personaController.pagination.pageSize}" rendered="#{personaController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{personaController.next}" value="#{bundle.Next} #{personaController.pagination.pageSize}" rendered="#{personaController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{personaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaTitle_nombre}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.nombre}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaTitle_apellido}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.apellido}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaTitle_email}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.email}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaTitle_psw}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.psw}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{personaController.prepareView}" value="#{bundle.ListPersonaViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{personaController.prepareEdit}" value="#{bundle.ListPersonaEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{personaController.destroy}" value="#{bundle.ListPersonaDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{personaController.prepareCreate}" value="#{bundle.ListPersonaCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListPersonaIndexLink}"/>
+                <p:panel header="Configuración de Personas" style="width: 60%; margin-left: 20%; margin-right: 20%">
+                    <p:dataTable id="cursos" value="#{personaController.items}" var="item" style="width:60%; margin-left: 20%; margin-right: 20%"
+                                 paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+                        <f:facet name="header">
+                            <p:commandButton value="Agregar" title="Agregar" icon="ui-icon-document" 
+                                             action="#{personaController.prepareCreate}"
+                                             style="display: block; text-align: right;"/>
+                        </f:facet>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{item.nombre}" />
+                        </p:column>
+                        <p:column headerText="Apellido">
+                            <h:outputText value="#{item.apellido}" />
+                        </p:column>
+                        <p:column headerText="email">
+                            <h:outputText value="#{item.email}" />
+                        </p:column>
+                        <p:column headerText="Acción" width="10%" style="text-align: center;">
+                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{personaController.prepareEdit}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:link outcome="/index" value="#{bundle.ListPerfilPersonaIndexLink}"/>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>

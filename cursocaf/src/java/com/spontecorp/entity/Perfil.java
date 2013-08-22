@@ -103,7 +103,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.entity.Perfil[ id=" + id + " ]";
+        return nombre;
     }
     
 }
