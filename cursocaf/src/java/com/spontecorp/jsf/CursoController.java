@@ -176,6 +176,7 @@ public class CursoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("CursoCreated"));
             return prepareCreate();
         } catch (Exception e) {
