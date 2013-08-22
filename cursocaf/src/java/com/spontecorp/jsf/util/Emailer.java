@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,6 +67,7 @@ public class Emailer {
             message.setFrom(new InternetAddress(de));
             setCuerpo();
             message.setText(cuerpo);
+            message.setSubject("Bienvenido al Sistema de Horarios de Cursos!");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
 
             transport.connect();
@@ -82,12 +84,15 @@ public class Emailer {
 
     public void setCuerpo() {
         String parametros = "";
-        parametros = parametros + "?email=" + para;
+        parametros = parametros + "?faces-redirect=true";
+        parametros = parametros + "&email=" + para;
         parametros = parametros + "&idPersona=" + idPersona;
-        parametros = parametros + "&idCurso=" + idCurso;
+        parametros = parametros + "&idCurso=" + idCurso; 
+       
+        
         vinculo = vinculo + parametros;
-        cuerpo = "Estimado/a " + nombre + "\n"
-                + "Usted se ha inscrito en el curso pautado para el día " + horario + "\n"
+        cuerpo = "Estimado/a " + nombre + ".\n"
+                + "Usted se ha inscrito en el curso pautado para el día " + horario + "\n\n"
                 + "Por favor entre el siguiente vínculo para confirmar su asistencia: "
                 + vinculo;
 

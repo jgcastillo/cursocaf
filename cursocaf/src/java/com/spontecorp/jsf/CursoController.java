@@ -3,17 +3,21 @@ package com.spontecorp.jsf;
 import com.spontecorp.entity.Curso;
 import com.spontecorp.entity.Persona;
 import com.spontecorp.entity.PersonaCurso;
+import com.spontecorp.jsf.util.Emailer;
 import com.spontecorp.jsf.util.JpaUtilities;
 import com.spontecorp.jsf.util.JsfUtil;
 import com.spontecorp.jsf.util.PaginationHelper;
 import com.spontecorp.session.CursoFacade;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -22,12 +26,12 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 @ManagedBean(name = "cursoController")
 @SessionScoped
 public class CursoController implements Serializable {
-
-    private Curso current;
+     private Curso current;
     private List<Curso> listCurso;
     private transient DataModel items = null;
     @EJB
@@ -43,10 +47,13 @@ public class CursoController implements Serializable {
     private String email;
     private Curso selected;
     private int idSelectedCurso;
+    private boolean valid= false;
 
     public CursoController() {
     }
-
+ 
+        
+    
     public Curso getSelected() {
         if (current == null) {
             current = new Curso();
@@ -54,8 +61,8 @@ public class CursoController implements Serializable {
         }
         return current;
     }
-    
-    public void setSelected(Curso curso){
+
+    public void setSelected(Curso curso) {
         current = curso;
     }
 
@@ -80,8 +87,6 @@ public class CursoController implements Serializable {
         }
         return pagination;
     }
-    
-    
 
     public String prepareList() {
         recreateModel();
@@ -93,7 +98,7 @@ public class CursoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
     public String prepareRegister() {
         FacesContext context = FacesContext.getCurrentInstance();
         int idCurso = context.getExternalContext().getRequestParameterMap().get("idCurso") != null ? Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("idCurso")) : -1;
@@ -110,8 +115,8 @@ public class CursoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-    
-    public String prepareMessage() {
+
+    public String prepareMessage() {        
         return "message";
     }
 
@@ -120,34 +125,52 @@ public class CursoController implements Serializable {
             //current = (Curso)getItems().getRowData();
             Persona persona = new Persona();
             PersonaCurso personaCurso = new PersonaCurso();
-            
+
             //Se setean los Datos de la Persona
             persona.setNombre(getNombre());
             persona.setApellido(getApellido());
             persona.setEmail(getEmail());
-            
+
             //Se crea la Persona
             ejbPersonaFacade.create(persona);
-            
+
             //Se setean los Datos de la relación Curso-Persona
             current = ejbFacade.find(idSelectedCurso);
             personaCurso.setCursoId(current);
             personaCurso.setPersonaId(persona);
             personaCurso.setStatus(JpaUtilities.PENDIENTE);
             personaCurso.setFecha(new Date());
-            
+
             //Se guarda la Relación Curso-Persona
             ejbPersonaCursoFacade.create(personaCurso);
-            
             recreateModel();
             JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
+            //Se envía el correo eletrónico 
+            Emailer emailer = new Emailer();
+            //Se arma la url base
+            HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            String vinculo = origRequest.getRequestURL().toString();
+            vinculo = vinculo.replace("/content/register.xhtml", "/content/message.xhtml");
+            emailer.setVinculo(vinculo);
+
+            //Se configuran los datos del participante
+            DateFormat formatFecha = DateFormat.getDateInstance(DateFormat.FULL);
+            SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss aa");
+            emailer.setPara(persona.getEmail());
+            emailer.setNombre(persona.getNombre() + " " + persona.getApellido());
+            emailer.setHorario(formatFecha.format(current.getFecha()) + "  a las " + formatHora.format(current.getHora()) + " en " + current.getLugar());
+            emailer.setIdPersona(persona.getId().toString());
+            emailer.setIdCurso(current.getId().toString());
+            //Se envía la información!
+            emailer.send();
+
             return prepareMessage();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Problemas al crear el Registro");
             return null;
         }
     }
-    
+
     public String create() {
         try {
             getFacade().create(current);
@@ -223,13 +246,13 @@ public class CursoController implements Serializable {
     }
 
     /**
-     * Modificación del DataModel para mostrar la Lista en PrimeFaces
-     * @return 
+     * Modificación del DataModel para mostrar la Lista en PrimeFaces    *
+     * @return
      */
     public DataModel getItems() {
         //recreateModel();
         if (items == null) {
-            items = new ListDataModel(getFacade().findAll());   
+            items = new ListDataModel(getFacade().findAll());
         }
         return items;
     }
@@ -238,7 +261,7 @@ public class CursoController implements Serializable {
         items = null;
         nombre = null;
         apellido = null;
-        email = null;  
+        email = null;
     }
 
     private void recreatePagination() {

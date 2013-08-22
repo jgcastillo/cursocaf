@@ -32,7 +32,7 @@ public class PersonaCursoController implements Serializable {
     private com.spontecorp.session.PersonaCursoFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    
+
     public PersonaCursoController() {
     }
 
@@ -85,7 +85,6 @@ public class PersonaCursoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            
             HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String vinculo = origRequest.getRequestURL().toString();
             Emailer emailer = new Emailer();
@@ -96,8 +95,8 @@ public class PersonaCursoController implements Serializable {
             emailer.setHorario(current.getCursoId().getFecha() + "  a las " + current.getCursoId().getHora() + " en " + current.getCursoId().getLugar());
             emailer.setIdPersona(current.getPersonaId().getId().toString());
             emailer.setIdCurso(current.getCursoId().getId().toString());
-            
             emailer.send();
+
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("PersonaCursoCreated"));
             return prepareCreate();
         } catch (Exception e) {
