@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="css/jsfcrud.css"/>
+    </h:head>
+    <h:body>
+        <h:form id="listCursos"> 
+            <h:form>
+                <p:panel id="panel" header="Mensaje" style="margin-top:50px; width:60%; margin-left: 20%; margin-right: 20%">
+
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+
+                    <f:facet name="footer">
+                        <h:panelGrid columns="3" style="display:block;margin-left: 50%">
+                            <p:commandButton value="Aceptar" title="Aceptar" icon="ui-icon-disk" immediate="true"
+                                             action="/index"/>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:panel>
+            </h:form>
+        </h:form>
+    </h:body>
+
+
+</html>

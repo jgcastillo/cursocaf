@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
         <h:outputStylesheet name="css/jsfcrud.css"/>
@@ -21,11 +23,49 @@
         <h:link outcome="/admin/persona/List" value="Show All Persona Items"/>
         <br />
         <h:link outcome="/admin/personaCurso/List" value="Show All PersonaCurso Items"/>
+
+        <h:form id="listCursos"> 
+
+            <p:dataTable id="cursos" value="#{cursoController.listCurso}" var="item" style="width:60%; margin-left: 20%; margin-right: 20%"
+                         paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                         rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+                <f:facet name="header">
+                    <p  style="text-align: center">Fechas de Cursos disponibles</p>
+                </f:facet><br/>
+                <p:column headerText="Fecha" style="text-align: center">
+                    <h:outputText value="#{item.fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha" style="text-align: center">
+                    <h:outputText value="#{item.hora}">
+                        <f:convertDateTime pattern="HH:mm:ss" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Descripción" >
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column headerText="Lugar" >
+                    <h:outputText value="#{item.lugar}"/>
+                </p:column>
+                <p:column headerText="Capacidad" style="text-align: center">
+                    <h:outputText value="#{item.capacidad}"/>
+                </p:column>
+                <p:column headerText="Status" style="text-align: center">
+
+                    <h:outputText value="Activo" rendered="#{item.status==1}" />
+                    <h:outputText value="Inactivo" rendered="#{item.status==0}" />
+                </p:column>
+                <p:column headerText="Acción" style="text-align: center">
+                    <p:commandButton value="Regístrarse" title="Regístrarse" 
+                                     action="#{cursoController.prepareRegister}">
+                        <f:param name="idCurso" value="#{item.id}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
     </h:body>
-
-
-
-
-
 </html>
 

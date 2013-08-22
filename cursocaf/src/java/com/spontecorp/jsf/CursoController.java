@@ -1,11 +1,16 @@
 package com.spontecorp.jsf;
 
 import com.spontecorp.entity.Curso;
+import com.spontecorp.entity.Persona;
+import com.spontecorp.entity.PersonaCurso;
+import com.spontecorp.jsf.util.JpaUtilities;
 import com.spontecorp.jsf.util.JsfUtil;
 import com.spontecorp.jsf.util.PaginationHelper;
 import com.spontecorp.session.CursoFacade;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -23,11 +28,21 @@ import javax.faces.model.SelectItem;
 public class CursoController implements Serializable {
 
     private Curso current;
-    private DataModel items = null;
+    private List<Curso> listCurso;
+    private transient DataModel items = null;
     @EJB
     private com.spontecorp.session.CursoFacade ejbFacade;
+    @EJB
+    private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
+    @EJB
+    private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private String nombre;
+    private String apellido;
+    private String email;
+    private Curso selected;
+    private int idSelectedCurso;
 
     public CursoController() {
     }
@@ -35,9 +50,13 @@ public class CursoController implements Serializable {
     public Curso getSelected() {
         if (current == null) {
             current = new Curso();
-            selectedItemIndex = -1;
+            //selectedItemIndex = -1;
         }
         return current;
+    }
+    
+    public void setSelected(Curso curso){
+        current = curso;
     }
 
     private CursoFacade getFacade() {
@@ -45,6 +64,7 @@ public class CursoController implements Serializable {
     }
 
     public PaginationHelper getPagination() {
+        recreateModel();
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
                 @Override
@@ -60,6 +80,8 @@ public class CursoController implements Serializable {
         }
         return pagination;
     }
+    
+    
 
     public String prepareList() {
         recreateModel();
@@ -71,13 +93,61 @@ public class CursoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
+    
+    public String prepareRegister() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        int idCurso = context.getExternalContext().getRequestParameterMap().get("idCurso") != null ? Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("idCurso")) : -1;
+
+        idSelectedCurso = idCurso;
+        //current = (Curso) getItems().getRowData();
+        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = ejbFacade.find(idCurso);
+        return "/content/register";
+    }
 
     public String prepareCreate() {
         current = new Curso();
         selectedItemIndex = -1;
         return "Create";
     }
+    
+    public String prepareMessage() {
+        return "message";
+    }
 
+    public String registerPerson() {
+        try {
+            //current = (Curso)getItems().getRowData();
+            Persona persona = new Persona();
+            PersonaCurso personaCurso = new PersonaCurso();
+            
+            //Se setean los Datos de la Persona
+            persona.setNombre(getNombre());
+            persona.setApellido(getApellido());
+            persona.setEmail(getEmail());
+            
+            //Se crea la Persona
+            ejbPersonaFacade.create(persona);
+            
+            //Se setean los Datos de la relación Curso-Persona
+            current = ejbFacade.find(idSelectedCurso);
+            personaCurso.setCursoId(current);
+            personaCurso.setPersonaId(persona);
+            personaCurso.setStatus(JpaUtilities.PENDIENTE);
+            personaCurso.setFecha(new Date());
+            
+            //Se guarda la Relación Curso-Persona
+            ejbPersonaCursoFacade.create(personaCurso);
+            
+            recreateModel();
+            JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
+            return prepareMessage();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Problemas al crear el Registro");
+            return null;
+        }
+    }
+    
     public String create() {
         try {
             getFacade().create(current);
@@ -152,15 +222,23 @@ public class CursoController implements Serializable {
         }
     }
 
+    /**
+     * Modificación del DataModel para mostrar la Lista en PrimeFaces
+     * @return 
+     */
     public DataModel getItems() {
+        //recreateModel();
         if (items == null) {
-            items = getPagination().createPageDataModel();
+            items = new ListDataModel(getFacade().findAll());   
         }
         return items;
     }
 
     private void recreateModel() {
         items = null;
+        nombre = null;
+        apellido = null;
+        email = null;  
     }
 
     private void recreatePagination() {
@@ -179,12 +257,53 @@ public class CursoController implements Serializable {
         return "List";
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getIdSelectedCurso() {
+        return idSelectedCurso;
+    }
+
+    public void setIdSelectedCurso(int idSelectedCurso) {
+        this.idSelectedCurso = idSelectedCurso;
+    }
+
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    public List<Curso> getListCurso() {
+        listCurso = ejbFacade.findAll();
+        return listCurso;
+    }
+
+    public void setListCurso(List<Curso> listCurso) {
+        this.listCurso = listCurso;
     }
 
     @FacesConverter(forClass = Curso.class)
