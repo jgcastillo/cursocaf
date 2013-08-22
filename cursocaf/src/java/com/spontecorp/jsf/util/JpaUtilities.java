@@ -13,6 +13,7 @@ public class JpaUtilities {
     public static int ACTIVO = 1;
     public static int INACTIVO = 0;
     public static int PENDIENTE = 1;
+    public static int INSCRITO = 1;
     
     public JpaUtilities(){
         

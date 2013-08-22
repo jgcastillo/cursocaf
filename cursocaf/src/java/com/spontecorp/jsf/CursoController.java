@@ -36,6 +36,8 @@ public class CursoController implements Serializable {
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
     @EJB
     private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
+    @EJB
+    private com.spontecorp.session.PersonaCursoFacadeExt ejbPersonaCursoFacadeExt;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private String nombre;
@@ -298,7 +300,16 @@ public class CursoController implements Serializable {
     }
 
     public List<Curso> getListCurso() {
-        listCurso = ejbFacade.findAll();
+        listCurso = null;
+        if(listCurso == null){
+            listCurso = ejbFacade.findAll();
+            for (Curso option : listCurso) {
+                int capacidad = option.getCapacidad();
+                int inscritos = ejbPersonaCursoFacadeExt.findCuposDisponibles(option);
+                int totalDisponible = capacidad - inscritos;
+                option.setTotalDisponible(totalDisponible);
+            }
+        }
         return listCurso;
     }
 
