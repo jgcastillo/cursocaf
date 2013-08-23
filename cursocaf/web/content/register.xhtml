@@ -50,15 +50,18 @@
 
                     <f:facet name="footer">
                         <h:panelGrid columns="3" style="display:block;margin-left: 50%">
-                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
-                                             action="#{cursoController.registerPerson}" ajax="true" update="panel"/>
+                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" type=""
+                                             action="#{cursoController.registerPerson}" onstart="PF('pbAjax').start();" update="panel"
+                                             />
                             <p:spacer width="10"/>
                             <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
-                                             action="/index"/>
-                        </h:panelGrid>
+                                             action="/index" />
+                        </h:panelGrid>     
                     </f:facet>
-                </p:panel>
-
+                    <p:progressBar ajax="true" styleClass="animated" rendered="#{cursoController.progressRender}" 
+                                   labelTemplate="{value}%"  value="#{cursoController.progessValue}" widgetVar="pbAjax" 
+                                    />
+                </p:panel>            
             </h:form>
         </ui:define>
     </ui:composition>

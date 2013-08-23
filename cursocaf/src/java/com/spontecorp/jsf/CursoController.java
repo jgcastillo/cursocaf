@@ -7,6 +7,7 @@ import com.spontecorp.jsf.util.Emailer;
 import com.spontecorp.jsf.util.JpaUtilities;
 import com.spontecorp.jsf.util.JsfUtil;
 import com.spontecorp.jsf.util.PaginationHelper;
+
 import com.spontecorp.session.CursoFacade;
 
 import java.io.Serializable;
@@ -31,7 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "cursoController")
 @SessionScoped
 public class CursoController implements Serializable {
-     private Curso current;
+
+    private Curso current;
     private List<Curso> listCurso;
     private transient DataModel items = null;
     @EJB
@@ -49,13 +51,12 @@ public class CursoController implements Serializable {
     private String email;
     private Curso selected;
     private int idSelectedCurso;
-    private boolean valid= false;
+    private Boolean progressRender = false;
+    private Integer progressValue = 0;
 
     public CursoController() {
     }
- 
-        
-    
+
     public Curso getSelected() {
         if (current == null) {
             current = new Curso();
@@ -124,15 +125,16 @@ public class CursoController implements Serializable {
 
     public String registerPerson() {
         try {
+
+            progressRender = true;
             //current = (Curso)getItems().getRowData();
             Persona persona = new Persona();
             PersonaCurso personaCurso = new PersonaCurso();
-
             //Se setean los Datos de la Persona
             persona.setNombre(getNombre());
             persona.setApellido(getApellido());
             persona.setEmail(getEmail());
-
+            setProgessValue(20);
             //Se crea la Persona
             ejbPersonaFacade.create(persona);
 
@@ -142,7 +144,8 @@ public class CursoController implements Serializable {
             personaCurso.setPersonaId(persona);
             personaCurso.setStatus(JpaUtilities.PENDIENTE);
             personaCurso.setFecha(new Date());
-
+            setProgessValue(35);
+            Thread.sleep(2000);  
             //Se guarda la Relación Curso-Persona
             ejbPersonaCursoFacade.create(personaCurso);
             recreateModel();
@@ -150,11 +153,12 @@ public class CursoController implements Serializable {
             //Se envía el correo eletrónico 
             Emailer emailer = new Emailer();
             //Se arma la url base
+            setProgessValue(45);
             HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String vinculo = origRequest.getRequestURL().toString();
             vinculo = vinculo.replace("/content/register.xhtml", "/content/message.xhtml");
-            emailer.setVinculo(vinculo);
-
+            emailer.setVinculo(vinculo);          
+            setProgessValue(70);           
             //Se configuran los datos del participante
             DateFormat formatFecha = DateFormat.getDateInstance(DateFormat.FULL);
             SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss aa");
@@ -164,8 +168,11 @@ public class CursoController implements Serializable {
             emailer.setIdPersona(persona.getId().toString());
             emailer.setIdCurso(current.getId().toString());
             //Se envía la información!
+            setProgessValue(85);
             emailer.send();
-
+            setProgessValue(100);
+            progressRender=false;
+            setProgessValue(0);
             return prepareMessage();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Problemas al crear el Registro");
@@ -176,7 +183,7 @@ public class CursoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            
+
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("CursoCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -343,6 +350,23 @@ public class CursoController implements Serializable {
 
     public void setListCurso(List<Curso> listCurso) {
         this.listCurso = listCurso;
+    }
+
+    public Boolean getProgressRender() {
+        return progressRender;
+    }
+
+    public void setProgressRender(Boolean progressRender) {
+        this.progressRender = progressRender;
+    }
+
+    public Integer getProgessValue() {
+        return progressValue;
+    }
+
+    public void setProgessValue(Integer ProgessValue) {
+        this.progressValue = ProgessValue;
+        System.out.println(ProgessValue);
     }
 
     @FacesConverter(forClass = Curso.class)
