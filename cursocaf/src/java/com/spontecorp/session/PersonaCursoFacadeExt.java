@@ -5,6 +5,7 @@
 package com.spontecorp.session;
 
 import com.spontecorp.entity.Curso;
+import com.spontecorp.entity.Persona;
 import com.spontecorp.entity.PersonaCurso;
 import com.spontecorp.jsf.util.JpaUtilities;
 import javax.ejb.Stateless;
@@ -43,5 +44,14 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
         Query q = getEntityManager().createQuery(query);
         q.setParameter("curso", curso);
         return q.getResultList().size();
+    }
+    public void setEstatusInscritos(Persona per, Curso cur, int status){
+        String query = "UPDATE PersonaCurso SET status = :status WHERE personaId = :persona "
+                + "AND cursoId = :curso";
+        Query q = getEntityManager().createQuery(query);
+        q.setParameter("persona", per);
+        q.setParameter("curso", cur);
+        q.setParameter("status", status);
+        q.executeUpdate();
     }
 }
