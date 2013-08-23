@@ -56,7 +56,7 @@ public class MessageController implements Serializable {
                 valid = false;
              
             } else {
-                ejbPersonaCursoFacadeExt.setEstatusInscritos(per, cur, JpaUtilities.INSCRITO);
+                ejbPersonaCursoFacadeExt.setStatusInscritos(per, cur, JpaUtilities.INSCRITO);
                 valid = true;
             }
         }
