@@ -8,118 +8,55 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListCursoTitle}"></h:outputText>
+            <h:outputText value="Configuración de Cursos"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
-
-                <p:dataTable id="cursos" value="#{cursoController.items}" var="item" style="width:60%; margin-left: 20%; margin-right: 20%"
-                             paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                             rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
-                    <f:facet name="header">
-                        <p  style="text-align: center">Lista de Cursos</p>
-                    </f:facet><br/>
-                    <p:column headerText="Fecha" style="text-align: center">
-                        <h:outputText value="#{item.fecha}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Hora" style="text-align: center">
-                        <h:outputText value="#{item.hora}">
-                            <f:convertDateTime pattern="HH:mm:ss" />
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Lugar" style="text-align: center">
-                        <h:outputText value="#{item.lugar}"/>
-                    </p:column>
-                    <p:column headerText="Decsripción" style="text-align: center">
-                        <h:outputText value="#{item.descripcion}"/>
-                    </p:column>
-                    <p:column headerText="Capacidad" style="text-align: center">
-                        <h:outputText value="#{item.capacidad}"/>
-                    </p:column>
-                    <p:column headerText="Status" style="text-align: center">
-                        <h:outputText value="Activo" rendered="#{item.status==1}" />
-                        <h:outputText value="Inactivo" rendered="#{item.status==0}" />
-                    </p:column>
-                    <p:column headerText="Acción" width="10%">
-                        <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{cursoController.prepareEdit}"/>
-                    </p:column>
-                </p:dataTable>
-
-
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListCursoEmpty}" rendered="#{cursoController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{cursoController.items.rowCount > 0}">
-                    <h:outputText value="#{cursoController.pagination.pageFirstItem + 1}..#{cursoController.pagination.pageLastItem + 1}/#{cursoController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{cursoController.previous}" value="#{bundle.Previous} #{cursoController.pagination.pageSize}" rendered="#{cursoController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{cursoController.next}" value="#{bundle.Next} #{cursoController.pagination.pageSize}" rendered="#{cursoController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{cursoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_fecha}"/>
-                            </f:facet>
+                <p:panel header="Configuración de Cursos" style="width: 70%; margin-left: 15%; margin-right: 15%"> 
+                    <p:dataTable id="cursos" value="#{cursoController.items}" var="item" style="width:90%; margin-left: 5%; margin-right: 5%"
+                                 paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+                        <f:facet name="header">
+                            <p:commandButton value="Agregar" title="Agregar" icon="ui-icon-document" 
+                                             action="#{cursoController.prepareCreate}"
+                                             style="display: block; text-align: right;"/>
+                        </f:facet>
+                        <p:column headerText="Fecha" style="text-align: center">
                             <h:outputText value="#{item.fecha}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_hora}"/>
-                            </f:facet>
+                        </p:column>
+                        <p:column headerText="Hora" style="text-align: center">
                             <h:outputText value="#{item.hora}">
                                 <f:convertDateTime pattern="HH:mm:ss" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_lugar}"/>
-                            </f:facet>
+                        </p:column>
+                        <p:column headerText="Lugar" style="text-align: center">
                             <h:outputText value="#{item.lugar}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_descripcion}"/>
-                            </f:facet>
+                        </p:column>
+                        <p:column headerText="Decsripción" style="text-align: center">
                             <h:outputText value="#{item.descripcion}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_capacidad}"/>
-                            </f:facet>
+                        </p:column>
+                        <p:column headerText="Capacidad" style="text-align: center">
                             <h:outputText value="#{item.capacidad}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListCursoTitle_status}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.status}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{cursoController.prepareView}" value="#{bundle.ListCursoViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{cursoController.prepareEdit}" value="#{bundle.ListCursoEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{cursoController.destroy}" value="#{bundle.ListCursoDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{cursoController.prepareCreate}" value="#{bundle.ListCursoCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListCursoIndexLink}"/>
+                        </p:column>
+                        <p:column headerText="Status" style="text-align: center">
+                            <h:outputText value="Activo" rendered="#{item.status==1}" />
+                            <h:outputText value="Inactivo" rendered="#{item.status==0}" />
+                        </p:column>
+                        <p:column headerText="Acción" style="text-align: center;">
+                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{cursoController.prepareEdit}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:link outcome="/index" value="#{bundle.ListCursoIndexLink}"/>
+                </p:panel>
+
+
+                
+
             </h:form>
         </ui:define>
     </ui:composition>

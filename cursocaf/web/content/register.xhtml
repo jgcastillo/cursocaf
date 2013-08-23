@@ -16,7 +16,7 @@
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
             <h:form>
-                <p:panel id="panel" header="Complete los Datos para realizar su Regístro" style="margin-top:50px; width:60%; margin-left: 20%; margin-right: 20%">
+                <p:panel id="panel" header="Complete los Datos para realizar su Regístro" style="margin-top:50px; width:50%; margin-left: 25%; margin-right: 25%">
                     <h:panelGrid columns="2" title="Datos del Curso">
                         <h:outputText value="#{bundle.ViewCursoLabel_fecha}"/>
                         <h:outputText value="#{cursoController.selected.fecha}" title="#{bundle.ViewCursoTitle_fecha}">
@@ -49,10 +49,9 @@
                     </h:panelGrid>
 
                     <f:facet name="footer">
-                        <h:panelGrid columns="3" style="display:block;margin-left: 50%">
-                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" type=""
-                                             action="#{cursoController.registerPerson}" onstart="PF('pbAjax').start();" update="panel"
-                                             />
+                        <h:panelGrid columns="3" style="width: 25%; margin-left: 50%; margin-right: 25%">
+                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
+                                             action="#{cursoController.registerPerson}" oncomplete="pbAjax.start();" ajax="true" update="panel"/>
                             <p:spacer width="10"/>
                             <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
                                              action="/index" />

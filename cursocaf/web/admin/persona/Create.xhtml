@@ -3,35 +3,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.CreatePersonaTitle}"></h:outputText>
         </ui:define>
         <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreatePersonaLabel_nombre}" for="nombre" />
-                    <h:inputText id="nombre" value="#{personaController.selected.nombre}" title="#{bundle.CreatePersonaTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_nombre}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonaLabel_apellido}" for="apellido" />
-                    <h:inputText id="apellido" value="#{personaController.selected.apellido}" title="#{bundle.CreatePersonaTitle_apellido}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_apellido}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonaLabel_email}" for="email" />
-                    <h:inputText id="email" value="#{personaController.selected.email}" title="#{bundle.CreatePersonaTitle_email}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_email}"/>
-                    <h:outputLabel value="#{bundle.CreatePersonaLabel_psw}" for="psw" />
-                    <h:inputText id="psw" value="#{personaController.selected.psw}" title="#{bundle.CreatePersonaTitle_psw}" />
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{personaController.create}" value="#{bundle.CreatePersonaSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{personaController.prepareList}" value="#{bundle.CreatePersonaShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreatePersonaIndexLink}"/>
+                <p:panel id="panel" header="Crear Persona" style="width: 40%; margin-left: 30%; margin-right: 30%">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="#{bundle.CreatePerfilLabel_nombre}" for="nombre" />
+                        <p:inputText id="nombre" value="#{personaController.selected.nombre}" title="#{bundle.CreatePersonaTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePerfilRequiredMessage_nombre}"/>
+                        <p:message for="nombre"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaLabel_apellido}" for="apellido" />
+                        <p:inputText id="apellido" value="#{personaController.selected.apellido}" title="#{bundle.CreatePersonaTitle_apellido}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_apellido}"/>
+                        <p:message for="apellido"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaLabel_email}" for="email" />
+                        <p:inputText id="email" value="#{personaController.selected.email}" title="#{bundle.CreatePersonaTitle_email}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_email}"/>
+                        <p:message for="email"/>
+                        <p:outputLabel value="#{bundle.CreatePersonaLabel_psw}" for="psw" />
+                        <h:inputText id="psw" value="#{personaController.selected.psw}" title="#{bundle.CreatePersonaTitle_psw}"/>
+                        <p:message for="psw"/>
+                    </h:panelGrid>
+                    <f:facet name="footer">
+                        <h:panelGrid columns="3" style="width: 25%; margin-left: 50%; margin-right: 25%">
+                            <p:commandButton value="Guardar" 
+                                             action="#{personaController.create}"
+                                             ajax="true" update="panel"
+                                             icon="ui-icon-disk"/>
+                            <p:spacer width="20"/>
+                            <p:commandButton value="Cancelar" 
+                                             action="#{personaController.prepareList}"
+                                             immediate="true"
+                                             icon="ui-icon-cancel"/>
+                        </h:panelGrid>
+                    </f:facet>
+                </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>
