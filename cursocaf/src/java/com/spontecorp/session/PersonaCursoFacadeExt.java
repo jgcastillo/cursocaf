@@ -39,8 +39,10 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
      * @return 
      */
     public int findInscritos(Curso curso) {
+        //String query = "SELECT pc from PersonaCurso pc WHERE pc.cursoId = :curso and "
+        //        + "(pc.status = " + JpaUtilities.INSCRITO + " OR pc.status = " + JpaUtilities.PENDIENTE + ")" ;
         String query = "SELECT pc from PersonaCurso pc WHERE pc.cursoId = :curso and "
-                + "(pc.status = " + JpaUtilities.INSCRITO + " OR pc.status = " + JpaUtilities.PENDIENTE + ")" ;
+                + "pc.status = " + JpaUtilities.INSCRITO;
         Query q = getEntityManager().createQuery(query);
         q.setParameter("curso", curso);
         return q.getResultList().size();
