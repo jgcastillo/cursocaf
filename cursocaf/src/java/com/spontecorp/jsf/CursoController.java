@@ -40,9 +40,7 @@ public class CursoController implements Serializable {
     private com.spontecorp.session.CursoFacade ejbFacade;
     @EJB
     private com.spontecorp.session.CursoFacadeExt ejbCursoFacadeExt;
-    @EJB
-    private com.spontecorp.session.CursoFacadeExt ejbCursoFacadeExt;
-    @EJB
+        @EJB
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
     @EJB
     private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
