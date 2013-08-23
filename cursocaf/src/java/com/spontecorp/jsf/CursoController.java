@@ -37,6 +37,8 @@ public class CursoController implements Serializable {
     @EJB
     private com.spontecorp.session.CursoFacade ejbFacade;
     @EJB
+    private com.spontecorp.session.CursoFacadeExt ejbCursoFacadeExt;
+    @EJB
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
     @EJB
     private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
@@ -118,10 +120,18 @@ public class CursoController implements Serializable {
         return "Create";
     }
 
+    /**
+     * Muestra información ala Usuario del Status de su Registro
+     * @return 
+     */
     public String prepareMessage() {
         return "message";
     }
 
+    /**
+     * Método para realizar el Proceso de Inscripción de una Persona en un Curso
+     * @return 
+     */
     public String registerPerson() {
         try {
             //current = (Curso)getItems().getRowData();
@@ -178,7 +188,7 @@ public class CursoController implements Serializable {
             getFacade().create(current);
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("CursoCreated"));
-            return prepareCreate();
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/resources/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -187,7 +197,7 @@ public class CursoController implements Serializable {
 
     public String prepareEdit() {
         current = (Curso) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
@@ -195,7 +205,7 @@ public class CursoController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("CursoUpdated"));
-            return "View";
+            return prepareList();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/resources/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -330,9 +340,13 @@ public class CursoController implements Serializable {
         int inscritos = 0;
         int totalDisponible = 0;
         if (listCurso == null) {
-            listCurso = ejbFacade.findAll();
+            listCurso = ejbCursoFacadeExt.getCursosActivos();
             for (Curso option : listCurso) {
-                capacidad = option.getCapacidad();
+                if(option.getCapacidad() != null){
+                    capacidad = option.getCapacidad();
+                }else{
+                    capacidad = 0;
+                }
                 inscritos = ejbPersonaCursoFacadeExt.findInscritos(option);
                 totalDisponible = capacidad - inscritos;
                 option.setTotalDisponible(totalDisponible);

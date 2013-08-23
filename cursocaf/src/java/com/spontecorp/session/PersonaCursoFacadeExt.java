@@ -47,6 +47,13 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
         q.setParameter("curso", curso);
         return q.getResultList().size();
     }
+    
+    /**
+     * Actualiza el Status de una Persona en la relación Persona-Curso
+     * @param per
+     * @param cur
+     * @param status 
+     */
     public void setStatusInscritos(Persona per, Curso cur, int status){
         String query = "UPDATE PersonaCurso SET status = :status WHERE personaId = :persona "
                 + "AND cursoId = :curso";
