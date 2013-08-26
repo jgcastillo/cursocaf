@@ -1,68 +1,70 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value=""></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <p:panel id="panel" header="Complete los Datos para realizar su Regístro" style="margin-top:50px; width:50%; margin-left: 25%; margin-right: 25%">
-                    <h:panelGrid columns="2" title="Datos del Curso">
-                        <h:outputText value="#{bundle.ViewCursoLabel_fecha}"/>
-                        <h:outputText value="#{cursoController.selected.fecha}" title="#{bundle.ViewCursoTitle_fecha}">
-                            <f:convertDateTime pattern="MM/dd/yyyy" />
-                        </h:outputText>
-                        <h:outputText value="#{bundle.ViewCursoLabel_hora}"/>
-                        <h:outputText value="#{cursoController.selected.hora}" title="#{bundle.ViewCursoTitle_hora}">
-                            <f:convertDateTime pattern="HH:mm:ss" />
-                        </h:outputText>
-                        <h:outputText value="#{bundle.ViewCursoLabel_lugar}"/>
-                        <h:outputText value="#{cursoController.selected.lugar}" title="#{bundle.ViewCursoTitle_lugar}"/>
-                        <h:outputText value="#{bundle.ViewCursoLabel_descripcion}"/>
-                        <h:outputText value="#{cursoController.selected.descripcion}" title="#{bundle.ViewCursoTitle_descripcion}"/>
+    <ui:define name="title">
+        Configuración de Personas
+    </ui:define>
+    
+    <ui:define name="content">
+        <h:outputScript library="js" name="handleMessage.js"/>
+        <h:form id="register">
+            <p:panel id="panel" header="Complete los Datos para realizar su Regístro" style="width:60%; margin-left: 15%; margin-right: 15%">
+                <h:panelGrid columns="2" title="Datos del Curso">
+                    <h:outputText value="#{bundle.ViewCursoLabel_fecha}"/>
+                    <h:outputText value="#{cursoController.selected.fecha}" title="#{bundle.ViewCursoTitle_fecha}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewCursoLabel_hora}"/>
+                    <h:outputText value="#{cursoController.selected.hora}" title="#{bundle.ViewCursoTitle_hora}">
+                        <f:convertDateTime pattern="HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewCursoLabel_lugar}"/>
+                    <h:outputText value="#{cursoController.selected.lugar}" title="#{bundle.ViewCursoTitle_lugar}"/>
+                    <h:outputText value="#{bundle.ViewCursoLabel_descripcion}"/>
+                    <h:outputText value="#{cursoController.selected.descripcion}" title="#{bundle.ViewCursoTitle_descripcion}"/>
 <!--                        <h:outputText value="#{bundle.ViewCursoLabel_capacidad}"/>
-                        <h:outputText value="#{cursoController.selected.capacidad}" title="#{bundle.ViewCursoTitle_capacidad}"/>
-                        <h:outputText value="#{bundle.ViewCursoLabel_status}"/>
-                        <h:outputText value="#{cursoController.selected.status}" title="#{bundle.ViewCursoTitle_status}"/>-->
+                    <h:outputText value="#{cursoController.selected.capacidad}" title="#{bundle.ViewCursoTitle_capacidad}"/>
+                    <h:outputText value="#{bundle.ViewCursoLabel_status}"/>
+                    <h:outputText value="#{cursoController.selected.status}" title="#{bundle.ViewCursoTitle_status}"/>-->
+                </h:panelGrid>
+
+                <h:panelGrid columns="4" title="Datos de la Persona">
+                    <p:outputLabel value="#{bundle.CreatePersonaLabel_nombre}" for="nombre" />
+                    <p:inputText id="nombre" value="#{cursoController.nombre}" title="#{bundle.CreatePersonaTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_nombre}"/>
+                    <p:watermark for="nombre" value="Nombre *" />
+                    <p:message for="nombre"/>
+                    <p:outputLabel value="#{bundle.CreatePersonaLabel_apellido}" for="apellido" />
+                    <p:inputText id="apellido" value="#{cursoController.apellido}" title="#{bundle.CreatePersonaTitle_apellido}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_apellido}"/>
+                    <p:watermark for="apellido" value="Apellido *" />
+                    <p:message for="apellido"/>
+                    <p:outputLabel value="#{bundle.CreatePersonaLabel_email}" for="email" />
+                    <p:inputText id="email" value="#{cursoController.email}" title="#{bundle.CreatePersonaTitle_email}" validatorMessage="Invalid email format" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_email}">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:watermark for="email" value="Email Address *" />
+                    <p:message for="email"/>
+                </h:panelGrid>
+
+                <f:facet name="footer">
+                    <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
+                        <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
+                                         action="#{cursoController.registerPerson}" ajax="true" update="panel"/>
+                        <p:spacer width="10"/>
+                        <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
+                                         action="/index"/>
                     </h:panelGrid>
+                </f:facet>
+            </p:panel>
+      
+                
+     
+        </h:form>
+    </ui:define>
+</ui:composition>
 
-                    <h:panelGrid columns="3" title="Datos de la Persona">
-                        <p:outputLabel value="#{bundle.CreatePersonaLabel_nombre}" for="nombre" />
-                        <p:inputText id="nombre" value="#{cursoController.nombre}" title="#{bundle.CreatePersonaTitle_nombre}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_nombre}"/>
-                        <p:message for="nombre"/>
-                        <p:outputLabel value="#{bundle.CreatePersonaLabel_apellido}" for="apellido" />
-                        <p:inputText id="apellido" value="#{cursoController.apellido}" title="#{bundle.CreatePersonaTitle_apellido}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_apellido}"/>
-                        <p:message for="apellido"/>
-                        <p:outputLabel value="#{bundle.CreatePersonaLabel_email}" for="email" />
-                        <p:inputText id="email" value="#{cursoController.email}" title="#{bundle.CreatePersonaTitle_email}" required="true" requiredMessage="#{bundle.CreatePersonaRequiredMessage_email}"/>
-                        <p:message for="email"/>
-                    </h:panelGrid>
-
-                    <f:facet name="footer">
-                        <h:panelGrid columns="3" style="width: 25%; margin-left: 50%; margin-right: 25%">
-                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
-                                             action="#{cursoController.registerPerson}" oncomplete="pbAjax.start();" ajax="true" update="panel"/>
-                            <p:spacer width="10"/>
-                            <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
-                                             action="/index" />
-                        </h:panelGrid>     
-                    </f:facet>
-                    <p:progressBar ajax="true" styleClass="animated" rendered="#{cursoController.progressRender}" 
-                                   labelTemplate="{value}%"  value="#{cursoController.progessValue}" widgetVar="pbAjax" 
-                                    />
-                </p:panel>            
-            </h:form>
-        </ui:define>
-    </ui:composition>
-
-</html>
