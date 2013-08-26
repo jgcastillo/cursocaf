@@ -65,6 +65,7 @@ public class Curso implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cursoId")
     private List<PersonaCurso> personaCursoList;
     private transient int totalDisponible;
+    private transient boolean diponibilidad = true;
 
     public Curso() {
     }
@@ -143,6 +144,14 @@ public class Curso implements Serializable {
 
     public void setTotalDisponible(int totalDisponible) {
         this.totalDisponible = totalDisponible;
+    }
+
+    public boolean isDiponibilidad() {
+        return diponibilidad;
+    }
+
+    public void setDiponibilidad(boolean diponibilidad) {
+        this.diponibilidad = diponibilidad;
     }
 
     @Override

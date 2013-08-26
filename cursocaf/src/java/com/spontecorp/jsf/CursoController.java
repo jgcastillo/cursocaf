@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 @ManagedBean(name = "cursoController")
 @SessionScoped
 public class CursoController implements Serializable {
-
+    
     private Curso current;
     private List<Curso> listCurso;
     private transient DataModel items = null;
@@ -55,10 +55,10 @@ public class CursoController implements Serializable {
     private int idSelectedCurso;
     private boolean valid = false;
     private boolean showProgressBar = false;
-
+    
     public CursoController() {
     }
-
+    
     public Curso getSelected() {
         if (current == null) {
             current = new Curso();
@@ -66,15 +66,15 @@ public class CursoController implements Serializable {
         }
         return current;
     }
-
+    
     public void setSelected(Curso curso) {
         current = curso;
     }
-
+    
     private CursoFacade getFacade() {
         return ejbFacade;
     }
-
+    
     public PaginationHelper getPagination() {
         recreateModel();
         if (pagination == null) {
@@ -83,7 +83,7 @@ public class CursoController implements Serializable {
                 public int getItemsCount() {
                     return getFacade().count();
                 }
-
+                
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
@@ -92,29 +92,29 @@ public class CursoController implements Serializable {
         }
         return pagination;
     }
-
+    
     public String prepareList() {
         recreateModel();
         return "List";
     }
-
+    
     public String prepareView() {
         current = (Curso) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-
+    
     public String prepareRegister() {
         FacesContext context = FacesContext.getCurrentInstance();
         int idCurso = context.getExternalContext().getRequestParameterMap().get("idCurso") != null ? Integer.parseInt(context.getExternalContext().getRequestParameterMap().get("idCurso")) : -1;
-
+        
         idSelectedCurso = idCurso;
         //current = (Curso) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         current = ejbFacade.find(idCurso);
         return "/content/register";
     }
-
+    
     public String prepareCreate() {
         current = new Curso();
         selectedItemIndex = -1;
@@ -139,7 +139,7 @@ public class CursoController implements Serializable {
         try {
 
             //Verifico si el email existe
-            System.out.println("Email: "+getEmail());
+            System.out.println("Email: " + getEmail());
             Persona person = new Persona();
             person = ejbPersonaFacadeExt.findEmail(getEmail());
             showProgressBar = true;
@@ -164,12 +164,12 @@ public class CursoController implements Serializable {
 
                 //Se guarda la Relación Curso-Persona
                 ejbPersonaCursoFacade.create(personaCurso);
-
+                
                 JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
 
                 //Se envía el correo eletrónico 
                 sendEmail(persona);
-
+                
             } else {
                 PersonaCurso personCurso = ejbPersonaCursoFacadeExt.findPersonaCurso(person);
                 if (personCurso.getStatus() == JpaUtilities.NO_ASISTIO) {
@@ -182,13 +182,13 @@ public class CursoController implements Serializable {
 
                     //Se actualiza la Relación Curso-Persona
                     ejbPersonaCursoFacade.edit(personCurso);
-
+                    
                     JsfUtil.addSuccessMessage("Regístro Creado con éxito! "
                             + "Revise su correo electrónico y confirme su asistencia al curso!");
 
                     //Se envía el correo eletrónico 
                     sendEmail(personCurso.getPersonaId());
-
+                    
                 } else if (personCurso.getStatus() == JpaUtilities.PENDIENTE) {
                     JsfUtil.addSuccessMessage("Ud. ya se encuentra Regístrado en el Sistema. "
                             + "Su status de Registro aún no ha sido confirmado, por favor revise "
@@ -212,7 +212,8 @@ public class CursoController implements Serializable {
 
     /**
      * Método para enviar el Correo Electrónico
-     * @param persona 
+     *
+     * @param persona
      */
     public void sendEmail(Persona persona) {
         //Se envía el correo eletrónico 
@@ -234,11 +235,11 @@ public class CursoController implements Serializable {
         //Se envía la información!
         emailer.send();
     }
-
+    
     public String create() {
         try {
             getFacade().create(current);
-
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("CursoCreated"));
             return prepareList();
         } catch (Exception e) {
@@ -246,13 +247,13 @@ public class CursoController implements Serializable {
             return null;
         }
     }
-
+    
     public String prepareEdit() {
         current = (Curso) getItems().getRowData();
         //selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
-
+    
     public String update() {
         try {
             getFacade().edit(current);
@@ -263,7 +264,7 @@ public class CursoController implements Serializable {
             return null;
         }
     }
-
+    
     public String destroy() {
         current = (Curso) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -272,7 +273,7 @@ public class CursoController implements Serializable {
         recreateModel();
         return "List";
     }
-
+    
     public String destroyAndView() {
         performDestroy();
         recreateModel();
@@ -285,7 +286,7 @@ public class CursoController implements Serializable {
             return "List";
         }
     }
-
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -294,7 +295,7 @@ public class CursoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/resources/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-
+    
     private void updateCurrentItem() {
         int count = getFacade().count();
         if (selectedItemIndex >= count) {
@@ -322,7 +323,7 @@ public class CursoController implements Serializable {
         }
         return items;
     }
-
+    
     private void recreateModel() {
         items = null;
         nombre = null;
@@ -330,71 +331,71 @@ public class CursoController implements Serializable {
         email = null;
         showProgressBar = false;
     }
-
+    
     private void recreatePagination() {
         pagination = null;
     }
-
+    
     public String next() {
         getPagination().nextPage();
         recreateModel();
         return "List";
     }
-
+    
     public String previous() {
         getPagination().previousPage();
         recreateModel();
         return "List";
     }
-
+    
     public String getNombre() {
         return nombre;
     }
-
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     public String getApellido() {
         return apellido;
     }
-
+    
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-
+    
     public String getEmail() {
         return email;
     }
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
+    
     public int getIdSelectedCurso() {
         return idSelectedCurso;
     }
-
+    
     public boolean isShowProgressBar() {
         return showProgressBar;
     }
-
+    
     public void setShowProgressBar(boolean showProgressBar) {
         this.showProgressBar = showProgressBar;
     }
-
+    
     public void setIdSelectedCurso(int idSelectedCurso) {
         this.idSelectedCurso = idSelectedCurso;
     }
-
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
-
+    
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
+    
     public List<Curso> getListCurso() {
         listCurso = null;
         int capacidad = 0;
@@ -411,18 +412,21 @@ public class CursoController implements Serializable {
                 inscritos = ejbPersonaCursoFacadeExt.findInscritos(option);
                 totalDisponible = capacidad - inscritos;
                 option.setTotalDisponible(totalDisponible);
+                if (option.getTotalDisponible() <= 0) {
+                    option.setDiponibilidad(false);
+                }
             }
         }
         return listCurso;
     }
-
+    
     public void setListCurso(List<Curso> listCurso) {
         this.listCurso = listCurso;
     }
-
+    
     @FacesConverter(forClass = Curso.class)
     public static class CursoControllerConverter implements Converter {
-
+        
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
@@ -431,19 +435,19 @@ public class CursoController implements Serializable {
                     getValue(facesContext.getELContext(), null, "cursoController");
             return controller.ejbFacade.find(getKey(value));
         }
-
+        
         java.lang.Integer getKey(String value) {
             java.lang.Integer key;
             key = Integer.valueOf(value);
             return key;
         }
-
+        
         String getStringKey(java.lang.Integer value) {
             StringBuffer sb = new StringBuffer();
             sb.append(value);
             return sb.toString();
         }
-
+        
         public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
             if (object == null) {
                 return null;

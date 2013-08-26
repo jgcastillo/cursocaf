@@ -6,6 +6,7 @@ package com.spontecorp.jsf;
 
 import com.spontecorp.entity.Curso;
 import com.spontecorp.entity.Persona;
+import com.spontecorp.entity.PersonaCurso;
 import com.spontecorp.jsf.util.JpaUtilities;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -36,7 +37,7 @@ public class MessageController implements Serializable {
     private String idPersona;
     @ManagedProperty(value = "#{param.email}")
     private String email;
-    private boolean valid = false;
+    private String mensaje;
 
     @PostConstruct
     public void init() {
@@ -48,17 +49,27 @@ public class MessageController implements Serializable {
 
     public void chequear() {
         if (idPersona == null && idCurso == null) {
-            valid = false;
         } else {
             Persona per = ejbPersonaFacade.find(Integer.parseInt(idPersona));
             Curso cur = ejbCursoFacade.find(Integer.parseInt(idCurso));
             if (per == null && cur == null) {
-                valid = false;
 
-            } else if(cur.getPersonaCursoList().size()<= cur.getCapacidad()) {
-                
-                ejbPersonaCursoFacadeExt.setStatusInscritos(per, cur, JpaUtilities.INSCRITO);
-                valid = true;
+                mensaje = "Su Registro ha concluído satisfactoriamente. \n "
+                        + "Chequee su correo electrónico y confirme su asistencia al curso.";
+            } else {
+
+                if (ejbPersonaCursoFacadeExt.findInscritos(cur) < cur.getCapacidad() + 1) {
+                    ejbPersonaCursoFacadeExt.setStatusInscritos(per, cur, JpaUtilities.INSCRITO);
+                    mensaje = "Se ha registrado exitosamente su inscripción en el curso.";
+
+
+                } else {
+                    mensaje = "Lamentamos informarle que durante el proceso de confirmación se agotaron los cupos para el curso que usted seleccionó.\n "
+                            + "Por favor repita el proceso nuevamente.";
+                    ejbPersonaCursoFacadeExt.remove(ejbPersonaCursoFacadeExt.findPersonaCurso(per));
+                    ejbPersonaFacade.remove(per);
+
+                }
             }
         }
 
@@ -88,11 +99,11 @@ public class MessageController implements Serializable {
         this.email = email;
     }
 
-    public boolean isValid() {
-        return valid;
+    public String getMensaje() {
+        return mensaje;
     }
 
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }
