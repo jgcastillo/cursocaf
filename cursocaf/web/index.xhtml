@@ -37,6 +37,9 @@
                 <p:column headerText="Lugar" >
                     <h:outputText value="#{item.lugar}"/>
                 </p:column>
+                <!--                <p:column headerText="Capacidad" style="text-align: center">
+                                    <h:outputText value="#{item.capacidad}"/>
+                                </p:column>-->
                 <p:column headerText="Disponibles" style="text-align: center">
                     <h:outputText value="#{item.totalDisponible}"/>
                 </p:column>
@@ -45,13 +48,20 @@
                     <h:outputText value="Activo" rendered="#{item.status==1}" />
                     <h:outputText value="Inactivo" rendered="#{item.status==0}" />
                 </p:column>
-                <p:column headerText="Acción" style="text-align: center">
-                    <p:commandButton value="Regístrarse" title="Regístrarse" 
+                <p:column headerText="Acción" style="text-align: center">                   
+                    <p:commandButton rendered="#{item.diponibilidad == true}" value="Regístrarse" title="Regístrarse" 
+                                      action="#{cursoController.prepareRegister}">
+                        <f:param name="idCurso" value="#{item.id}" />
+                    </p:commandButton>
+                    <p:commandButton rendered="#{item.diponibilidad == false}" disabled="true" value="Regístrarse" title="Regístrarse" 
                                      action="#{cursoController.prepareRegister}">
                         <f:param name="idCurso" value="#{item.id}" />
                     </p:commandButton>
+
                 </p:column>
             </p:dataTable>
+
         </h:form>
     </ui:define>
+
 </ui:composition>
