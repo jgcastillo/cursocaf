@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -40,7 +39,7 @@ public class CursoController implements Serializable {
     private com.spontecorp.session.CursoFacade ejbFacade;
     @EJB
     private com.spontecorp.session.CursoFacadeExt ejbCursoFacadeExt;
-        @EJB
+    @EJB
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
     @EJB
     private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
@@ -54,7 +53,7 @@ public class CursoController implements Serializable {
     private Curso selected;
     private int idSelectedCurso;
     private Boolean progressRender = false;
-    private Integer progressValue = 0;
+    private Integer progressValue;
 
     public CursoController() {
     }
@@ -123,7 +122,8 @@ public class CursoController implements Serializable {
 
     /**
      * Muestra información ala Usuario del Status de su Registro
-     * @return 
+     *
+     * @return
      */
     public String prepareMessage() {
         return "message";
@@ -131,7 +131,8 @@ public class CursoController implements Serializable {
 
     /**
      * Método para realizar el Proceso de Inscripción de una Persona en un Curso
-     * @return 
+     *
+     * @return
      */
     public String registerPerson() {
         try {
@@ -155,7 +156,7 @@ public class CursoController implements Serializable {
             personaCurso.setStatus(JpaUtilities.PENDIENTE);
             personaCurso.setFecha(new Date());
             setProgessValue(35);
-            Thread.sleep(2000);  
+            Thread.sleep(2000);
             //Se guarda la Relación Curso-Persona
             ejbPersonaCursoFacade.create(personaCurso);
             recreateModel();
@@ -163,12 +164,13 @@ public class CursoController implements Serializable {
             //Se envía el correo eletrónico 
             Emailer emailer = new Emailer();
             //Se arma la url base
+            Thread.sleep(3000);
             setProgessValue(45);
             HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             String vinculo = origRequest.getRequestURL().toString();
             vinculo = vinculo.replace("/content/register.xhtml", "/content/message.xhtml");
-            emailer.setVinculo(vinculo);          
-            setProgessValue(70);           
+            emailer.setVinculo(vinculo);
+            setProgessValue(70);
             //Se configuran los datos del participante
             DateFormat formatFecha = DateFormat.getDateInstance(DateFormat.FULL);
             SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss aa");
@@ -181,7 +183,7 @@ public class CursoController implements Serializable {
             setProgessValue(85);
             emailer.send();
             setProgessValue(100);
-            progressRender=false;
+            progressRender = false;
             setProgessValue(0);
             return prepareMessage();
         } catch (Exception e) {
@@ -349,9 +351,9 @@ public class CursoController implements Serializable {
         if (listCurso == null) {
             listCurso = ejbCursoFacadeExt.getCursosActivos();
             for (Curso option : listCurso) {
-                if(option.getCapacidad() != null){
+                if (option.getCapacidad() != null) {
                     capacidad = option.getCapacidad();
-                }else{
+                } else {
                     capacidad = 0;
                 }
                 inscritos = ejbPersonaCursoFacadeExt.findInscritos(option);
@@ -374,13 +376,22 @@ public class CursoController implements Serializable {
         this.progressRender = progressRender;
     }
 
-    public Integer getProgessValue() {
-        return progressValue;
-    }
+   public Integer getProgressValue() {  
+        if(progressValue == null)  
+            progressValue = 0;  
+        else {  
+                          
+            if(progressValue > 100)  
+                progressValue = 100;  
+        }            
+        System.out.println(progressValue);
+        return progressValue ;  
+        
+    }  
 
     public void setProgessValue(Integer ProgessValue) {
         this.progressValue = ProgessValue;
-        System.out.println(ProgessValue);
+        
     }
 
     @FacesConverter(forClass = Curso.class)

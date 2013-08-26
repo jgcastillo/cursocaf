@@ -14,7 +14,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-
 /**
  *
  * @author sponte07
@@ -22,7 +21,8 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean(name = "messageController")
 @RequestScoped
 public class MessageController implements Serializable {
-    @EJB 
+
+    @EJB
     private com.spontecorp.session.PersonaCursoFacadeExt ejbPersonaCursoFacadeExt;
     @EJB
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
@@ -40,22 +40,23 @@ public class MessageController implements Serializable {
 
     @PostConstruct
     public void init() {
-     chequear();
+        chequear();
     }
 
     public MessageController() {
     }
 
     public void chequear() {
-        if (idPersona == null && idCurso==null) {
+        if (idPersona == null && idCurso == null) {
             valid = false;
         } else {
             Persona per = ejbPersonaFacade.find(Integer.parseInt(idPersona));
             Curso cur = ejbCursoFacade.find(Integer.parseInt(idCurso));
-            if (per == null && cur ==null) {
+            if (per == null && cur == null) {
                 valid = false;
-             
-            } else {
+
+            } else if(cur.getPersonaCursoList().size()<= cur.getCapacidad()) {
+                
                 ejbPersonaCursoFacadeExt.setStatusInscritos(per, cur, JpaUtilities.INSCRITO);
                 valid = true;
             }

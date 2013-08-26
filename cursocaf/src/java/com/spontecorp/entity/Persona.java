@@ -34,6 +34,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email"),
     @NamedQuery(name = "Persona.findByPsw", query = "SELECT p FROM Persona p WHERE p.psw = :psw")})
 public class Persona implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -158,5 +159,4 @@ public class Persona implements Serializable {
     public String toString() {
         return nombre + " " + apellido;
     }
-    
 }

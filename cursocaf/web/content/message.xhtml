@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <f:metadata>
-          <f:viewParam name="email" value="#{messageController.email}" />
+        <f:viewParam name="email" value="#{messageController.email}" />
         <f:viewParam name="idPersona" value="#{messageController.idPersona}" />
         <f:viewParam name="idCurso" value="#{messageController.idCurso}" />
     </f:metadata>
@@ -22,12 +22,12 @@
 
                     <h:panelGroup rendered="#{messageController.valid}" id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green"  layout="table"/>
-                         <p>Ha concluido su registro exitosamente!</p> 
+                        <p>Ha concluido su registro exitosamente!</p> 
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!messageController.valid}" id="messagePanel2" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                         <p>Chequee su correo electrónico y confirme su asistencia al curso!</p> 
+                        <p>Chequee su correo electrónico y confirme su asistencia al curso!</p> 
                     </h:panelGroup>
                     <f:facet name="footer">
                         <h:panelGrid columns="3" style="display:block;margin-left: 50%">

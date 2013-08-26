@@ -17,29 +17,29 @@ import javax.persistence.Query;
  * @author sponte03
  */
 @Stateless
-public class CursoFacadeExt extends AbstractFacade<Curso>{
+public class CursoFacadeExt extends AbstractFacade<Curso> {
 
     @PersistenceContext(unitName = "cursocafPU")
     private EntityManager em;
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public CursoFacadeExt() {
         super(Curso.class);
     }
-    
+
     /**
-     *  Listado de Cursos Activos
-     * @param 
-     * @return 
+     * Listado de Cursos Activos
+     *
+     * @param
+     * @return
      */
     public List<Curso> getCursosActivos() {
         String query = "SELECT c from Curso c WHERE c.status = " + JpaUtilities.ACTIVO;
         Query q = getEntityManager().createQuery(query);
         return q.getResultList();
     }
-    
 }

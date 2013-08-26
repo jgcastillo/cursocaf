@@ -33,10 +33,12 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
     }
 
     /**
-     * Cantidad de Inscritos cuyo Status sea PENDIENTE = 1 o INSCRITO = 2
-     * Este resultado se usa para Calcular los Cupos Disponibles en un Curso determinado
+     * Cantidad de Inscritos cuyo Status sea PENDIENTE = 1 o INSCRITO = 2 Este
+     * resultado se usa para Calcular los Cupos Disponibles en un Curso
+     * determinado
+     *
      * @param curso
-     * @return 
+     * @return
      */
     public int findInscritos(Curso curso) {
         //String query = "SELECT pc from PersonaCurso pc WHERE pc.cursoId = :curso and "
@@ -47,14 +49,15 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
         q.setParameter("curso", curso);
         return q.getResultList().size();
     }
-    
+
     /**
      * Actualiza el Status de una Persona en la relación Persona-Curso
+     *
      * @param per
      * @param cur
-     * @param status 
+     * @param status
      */
-    public void setStatusInscritos(Persona per, Curso cur, int status){
+    public void setStatusInscritos(Persona per, Curso cur, int status) {
         String query = "UPDATE PersonaCurso SET status = :status WHERE personaId = :persona "
                 + "AND cursoId = :curso";
         Query q = getEntityManager().createQuery(query);

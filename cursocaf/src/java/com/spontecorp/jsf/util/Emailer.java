@@ -87,9 +87,9 @@ public class Emailer {
         parametros = parametros + "?faces-redirect=true";
         parametros = parametros + "&email=" + para;
         parametros = parametros + "&idPersona=" + idPersona;
-        parametros = parametros + "&idCurso=" + idCurso; 
-       
-        
+        parametros = parametros + "&idCurso=" + idCurso;
+
+
         vinculo = vinculo + parametros;
         cuerpo = "Estimado/a " + nombre + ".\n"
                 + "Usted se ha inscrito en el curso pautado para el día " + horario + "\n\n"

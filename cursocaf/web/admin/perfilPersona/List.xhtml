@@ -12,7 +12,7 @@
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
-                 <p:panel header="Configuración de Perfiles por Personas" style="width: 60%; margin-left: 20%; margin-right: 20%">
+                <p:panel header="Configuración de Perfiles por Personas" style="width: 60%; margin-left: 20%; margin-right: 20%">
                     <p:dataTable id="cursos" value="#{perfilPersonaController.items}" var="item" style="width:50%; margin-left: 25%; margin-right: 25%"
                                  paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">

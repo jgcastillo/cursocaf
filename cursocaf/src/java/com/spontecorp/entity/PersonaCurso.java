@@ -32,6 +32,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "PersonaCurso.findByFecha", query = "SELECT p FROM PersonaCurso p WHERE p.fecha = :fecha"),
     @NamedQuery(name = "PersonaCurso.findByStatus", query = "SELECT p FROM PersonaCurso p WHERE p.status = :status")})
 public class PersonaCurso implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,5 +122,4 @@ public class PersonaCurso implements Serializable {
     public String toString() {
         return "com.spontecorp.entity.PersonaCurso[ id=" + id + " ]";
     }
-    
 }

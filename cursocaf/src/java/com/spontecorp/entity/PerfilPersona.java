@@ -27,6 +27,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "PerfilPersona.findAll", query = "SELECT p FROM PerfilPersona p"),
     @NamedQuery(name = "PerfilPersona.findById", query = "SELECT p FROM PerfilPersona p WHERE p.id = :id")})
 public class PerfilPersona implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,5 +96,4 @@ public class PerfilPersona implements Serializable {
     public String toString() {
         return "com.spontecorp.entity.PerfilPersona[ id=" + id + " ]";
     }
-    
 }

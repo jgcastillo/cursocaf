@@ -38,6 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Curso.findByCapacidad", query = "SELECT c FROM Curso c WHERE c.capacidad = :capacidad"),
     @NamedQuery(name = "Curso.findByStatus", query = "SELECT c FROM Curso c WHERE c.status = :status")})
 public class Curso implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -168,5 +169,4 @@ public class Curso implements Serializable {
     public String toString() {
         return "com.spontecorp.entity.Curso[ id=" + id + " ]";
     }
-    
 }
