@@ -33,8 +33,8 @@
                         <p:inputTextarea rows="4" cols="30" id="descripcion" value="#{cursoController.selected.descripcion}" title="#{bundle.CreateCursoTitle_descripcion}" />
                         <p:message for="descripcion"/>
                         <p:outputLabel value="#{bundle.CreateCursoLabel_capacidad}" for="capacidad" />
-                        <p:inputText id="capacidad" value="#{cursoController.selected.capacidad}" title="#{bundle.CreateCursoTitle_capacidad}" required="false">
-                            <f:convertNumber integerOnly="true" maxIntegerDigits="2"/>
+                        <p:inputText id="capacidad" requiredMessage="Indique la capacidad máxima"  value="#{cursoController.selected.capacidad}" title="#{bundle.CreateCursoTitle_capacidad}" required="true">
+                            <f:convertNumber  integerOnly="true" maxIntegerDigits="2"/>
                         </p:inputText>
                         <p:message for="capacidad"/>
                         <p:outputLabel value="#{bundle.CreateCursoLabel_status}" for="status" />

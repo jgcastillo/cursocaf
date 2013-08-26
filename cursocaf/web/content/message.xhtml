@@ -15,14 +15,9 @@
             <h:form id="message">
                 <p:panel id="panel" header="Mensaje" style="margin-top:50px; width:60%; margin-left: 20%; margin-right: 20%">
 
-                    <h:panelGroup rendered="#{messageController.valid}" id="messagePanel" layout="block">
+                    <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green"  layout="table"/>
-                        <h:outputText value="Su Registro ha concluído exitósamente!"/>
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="#{!messageController.valid}" id="messagePanel2" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-<!--                        <h:outputText value="Revise su correo electrónico y confirme su asistencia al curso!"/>-->
+                        <h:outputText value="#{messageController.mensaje}"/>
                     </h:panelGroup>
                     <f:facet name="footer">
                         <h:panelGrid columns="3" style="display:block;margin-left: 80%">

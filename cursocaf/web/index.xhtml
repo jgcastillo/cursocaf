@@ -19,7 +19,7 @@
                          paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
                 <f:facet name="header">
-                   Fechas de Cursos disponibles
+                    Fechas de Cursos disponibles
                 </f:facet>
                 <p:column headerText="Fecha" style="text-align: center">
                     <h:outputText value="#{item.fecha}">
@@ -48,11 +48,16 @@
                     <h:outputText value="Activo" rendered="#{item.status==1}" />
                     <h:outputText value="Inactivo" rendered="#{item.status==0}" />
                 </p:column>
-                <p:column headerText="Acción" style="text-align: center">
-                    <p:commandButton value="Regístrarse" title="Regístrarse" 
+                <p:column headerText="Acción" style="text-align: center">                   
+                    <p:commandButton rendered="#{item.diponibilidad == true}" value="Regístrarse" title="Regístrarse" 
+                                      action="#{cursoController.prepareRegister}">
+                        <f:param name="idCurso" value="#{item.id}" />
+                    </p:commandButton>
+                    <p:commandButton rendered="#{item.diponibilidad == false}" disabled="true" value="Regístrarse" title="Regístrarse" 
                                      action="#{cursoController.prepareRegister}">
                         <f:param name="idCurso" value="#{item.id}" />
                     </p:commandButton>
+
                 </p:column>
             </p:dataTable>
 
