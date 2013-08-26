@@ -19,7 +19,7 @@
                          paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
                 <f:facet name="header">
-                   Fechas de Cursos disponibles
+                    Fechas de Cursos disponibles
                 </f:facet>
                 <p:column headerText="Fecha" style="text-align: center">
                     <h:outputText value="#{item.fecha}">
@@ -37,9 +37,6 @@
                 <p:column headerText="Lugar" >
                     <h:outputText value="#{item.lugar}"/>
                 </p:column>
-                <!--                <p:column headerText="Capacidad" style="text-align: center">
-                                    <h:outputText value="#{item.capacidad}"/>
-                                </p:column>-->
                 <p:column headerText="Disponibles" style="text-align: center">
                     <h:outputText value="#{item.totalDisponible}"/>
                 </p:column>
@@ -55,8 +52,6 @@
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
-
         </h:form>
     </ui:define>
-
 </ui:composition>

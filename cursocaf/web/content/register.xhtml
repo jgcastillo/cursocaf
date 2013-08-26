@@ -10,9 +10,8 @@
     <ui:define name="title">
         Configuración de Personas
     </ui:define>
-    
+
     <ui:define name="content">
-        <h:outputScript library="js" name="handleMessage.js"/>
         <h:form id="register">
             <p:panel id="panel" header="Complete los Datos para realizar su Regístro" style="width:60%; margin-left: 15%; margin-right: 15%">
                 <h:panelGrid columns="2" title="Datos del Curso">
@@ -28,10 +27,6 @@
                     <h:outputText value="#{cursoController.selected.lugar}" title="#{bundle.ViewCursoTitle_lugar}"/>
                     <h:outputText value="#{bundle.ViewCursoLabel_descripcion}"/>
                     <h:outputText value="#{cursoController.selected.descripcion}" title="#{bundle.ViewCursoTitle_descripcion}"/>
-<!--                        <h:outputText value="#{bundle.ViewCursoLabel_capacidad}"/>
-                    <h:outputText value="#{cursoController.selected.capacidad}" title="#{bundle.ViewCursoTitle_capacidad}"/>
-                    <h:outputText value="#{bundle.ViewCursoLabel_status}"/>
-                    <h:outputText value="#{cursoController.selected.status}" title="#{bundle.ViewCursoTitle_status}"/>-->
                 </h:panelGrid>
 
                 <h:panelGrid columns="4" title="Datos de la Persona">
@@ -50,21 +45,23 @@
                     <p:watermark for="email" value="Email Address *" />
                     <p:message for="email"/>
                 </h:panelGrid>
-
+                
+                <h:graphicImage rendered="#{cursoController.apellido == null}" library="images" name="ajax-loader.gif" style="margin-top: 10px; margin-bottom: 0px; margin-left: 40%;margin-right: 45%"/> 
+                
                 <f:facet name="footer">
                     <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
-                        <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
-                                         action="#{cursoController.registerPerson}" ajax="true" update="panel"/>
+                        <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" update="panel" 
+                                         action="#{cursoController.registerPerson}"  />
                         <p:spacer width="10"/>
                         <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
                                          action="/index"/>
                     </h:panelGrid>
                 </f:facet>
-            </p:panel>
-      
                 
-     
+            </p:panel>
+            
         </h:form>
+
     </ui:define>
 </ui:composition>
 

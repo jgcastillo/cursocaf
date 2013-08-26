@@ -14,32 +14,26 @@
             <ui:insert name="title">
                 <title>Título de la página</title>
             </ui:insert>
-        </f:facet>
-        
+        </f:facet> 
     </h:head>
-
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="north" size="105" resizable="false" 
                           closable="false" collapsible="false">
                 <ui:include src="./snippets/header.xhtml"/>
             </p:layoutUnit>
-
             <p:layoutUnit position="south" size="48" resizable="false" 
                           closable="false" collapsible="true">
                 <h:graphicImage library="images" name="logo-caf-esp2.png" style="margin-right:43%; margin-left:43%"/>
             </p:layoutUnit>
-
             <p:layoutUnit position="west" size="200" header="Menu" resizable="false" 
                           closable="false" collapsible="true">
                 <ui:include src="./snippets/menu.xhtml" />
             </p:layoutUnit>
-
             <p:layoutUnit position="center">
                 <ui:insert name="content">Put default content here, if any.</ui:insert>
             </p:layoutUnit>
 
         </p:layout>
     </h:body>
-
 </html>
