@@ -7,7 +7,6 @@ import com.spontecorp.jsf.util.Emailer;
 import com.spontecorp.jsf.util.JpaUtilities;
 import com.spontecorp.jsf.util.JsfUtil;
 import com.spontecorp.jsf.util.PaginationHelper;
-
 import com.spontecorp.session.CursoFacade;
 
 import java.io.Serializable;
@@ -40,8 +39,10 @@ public class CursoController implements Serializable {
     private com.spontecorp.session.CursoFacade ejbFacade;
     @EJB
     private com.spontecorp.session.CursoFacadeExt ejbCursoFacadeExt;
-        @EJB
+    @EJB
     private com.spontecorp.session.PersonaFacade ejbPersonaFacade;
+    @EJB
+    private com.spontecorp.session.PersonaFacadeExt ejbPersonaFacadeExt;
     @EJB
     private com.spontecorp.session.PersonaCursoFacade ejbPersonaCursoFacade;
     @EJB
@@ -53,8 +54,8 @@ public class CursoController implements Serializable {
     private String email;
     private Curso selected;
     private int idSelectedCurso;
-    private Boolean progressRender = false;
-    private Integer progressValue = 0;
+    private boolean valid = false;
+    private boolean showProgressBar = false;
 
     public CursoController() {
     }
@@ -123,7 +124,8 @@ public class CursoController implements Serializable {
 
     /**
      * Muestra información ala Usuario del Status de su Registro
-     * @return 
+     *
+     * @return
      */
     public String prepareMessage() {
         return "message";
@@ -131,63 +133,107 @@ public class CursoController implements Serializable {
 
     /**
      * Método para realizar el Proceso de Inscripción de una Persona en un Curso
-     * @return 
+     *
+     * @return
      */
     public String registerPerson() {
         try {
 
-            progressRender = true;
-            //current = (Curso)getItems().getRowData();
-            Persona persona = new Persona();
-            PersonaCurso personaCurso = new PersonaCurso();
-            //Se setean los Datos de la Persona
-            persona.setNombre(getNombre());
-            persona.setApellido(getApellido());
-            persona.setEmail(getEmail());
-            setProgessValue(20);
-            //Se crea la Persona
-            ejbPersonaFacade.create(persona);
+            //Verifico si el email existe
+            System.out.println("Email: "+getEmail());
+            Persona person = new Persona();
+            person = ejbPersonaFacadeExt.findEmail(getEmail());
+            showProgressBar = true;
+            if (person == null) {
+                Persona persona = new Persona();
+                PersonaCurso personaCurso = new PersonaCurso();
 
-            //Se setean los Datos de la relación Curso-Persona
-            current = ejbFacade.find(idSelectedCurso);
-            personaCurso.setCursoId(current);
-            personaCurso.setPersonaId(persona);
-            personaCurso.setStatus(JpaUtilities.PENDIENTE);
-            personaCurso.setFecha(new Date());
-            setProgessValue(35);
-            Thread.sleep(2000);  
-            //Se guarda la Relación Curso-Persona
-            ejbPersonaCursoFacade.create(personaCurso);
+                //Se setean los Datos de la Persona
+                persona.setNombre(getNombre());
+                persona.setApellido(getApellido());
+                persona.setEmail(getEmail());
+
+                //Se crea la Persona
+                ejbPersonaFacade.create(persona);
+
+                //Se setean los Datos de la relación Curso-Persona
+                current = ejbFacade.find(idSelectedCurso);
+                personaCurso.setCursoId(current);
+                personaCurso.setPersonaId(persona);
+                personaCurso.setStatus(JpaUtilities.PENDIENTE);
+                personaCurso.setFecha(new Date());
+
+                //Se guarda la Relación Curso-Persona
+                ejbPersonaCursoFacade.create(personaCurso);
+
+                JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
+
+                //Se envía el correo eletrónico 
+                sendEmail(persona);
+
+            } else {
+                PersonaCurso personCurso = ejbPersonaCursoFacadeExt.findPersonaCurso(person);
+                if (personCurso.getStatus() == JpaUtilities.NO_ASISTIO) {
+
+                    //Se setean los Datos de la relación Curso-Persona
+                    current = ejbFacade.find(idSelectedCurso);
+                    personCurso.setCursoId(current);
+                    personCurso.setFecha(new Date());
+                    personCurso.setStatus(JpaUtilities.PENDIENTE);
+
+                    //Se actualiza la Relación Curso-Persona
+                    ejbPersonaCursoFacade.edit(personCurso);
+
+                    JsfUtil.addSuccessMessage("Regístro Creado con éxito! "
+                            + "Revise su correo electrónico y confirme su asistencia al curso!");
+
+                    //Se envía el correo eletrónico 
+                    sendEmail(personCurso.getPersonaId());
+
+                } else if (personCurso.getStatus() == JpaUtilities.PENDIENTE) {
+                    JsfUtil.addSuccessMessage("Ud. ya se encuentra Regístrado en el Sistema. "
+                            + "Su status de Registro aún no ha sido confirmado, por favor revise "
+                            + "su correo eléctrónico y confirme su asistencia al Curso.");
+                } else if (personCurso.getStatus() == JpaUtilities.INSCRITO) {
+                    JsfUtil.addSuccessMessage("Ud. ya se encuentra Regístrado en el Sistema. "
+                            + "Su Registro ya se encuentra Activado.");
+                } else if (personCurso.getStatus() == JpaUtilities.ASISTIO) {
+                    JsfUtil.addSuccessMessage("Ud. ya se encuentra Regístrado en el Sistema. "
+                            + "Su status de Registro confirma que Ud. ya asistió al Curso.");
+                }
+            }
+            person = null;
             recreateModel();
-            JsfUtil.addSuccessMessage("Regístro Creado con éxito!");
-            //Se envía el correo eletrónico 
-            Emailer emailer = new Emailer();
-            //Se arma la url base
-            setProgessValue(45);
-            HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            String vinculo = origRequest.getRequestURL().toString();
-            vinculo = vinculo.replace("/content/register.xhtml", "/content/message.xhtml");
-            emailer.setVinculo(vinculo);          
-            setProgessValue(70);           
-            //Se configuran los datos del participante
-            DateFormat formatFecha = DateFormat.getDateInstance(DateFormat.FULL);
-            SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss aa");
-            emailer.setPara(persona.getEmail());
-            emailer.setNombre(persona.getNombre() + " " + persona.getApellido());
-            emailer.setHorario(formatFecha.format(current.getFecha()) + "  a las " + formatHora.format(current.getHora()) + " en " + current.getLugar());
-            emailer.setIdPersona(persona.getId().toString());
-            emailer.setIdCurso(current.getId().toString());
-            //Se envía la información!
-            setProgessValue(85);
-            emailer.send();
-            setProgessValue(100);
-            progressRender=false;
-            setProgessValue(0);
             return prepareMessage();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Problemas al crear el Registro");
             return null;
         }
+    }
+
+    /**
+     * Método para enviar el Correo Electrónico
+     * @param persona 
+     */
+    public void sendEmail(Persona persona) {
+        //Se envía el correo eletrónico 
+        Emailer emailer = new Emailer();
+        //Se arma la url base
+        HttpServletRequest origRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String vinculo = origRequest.getRequestURL().toString();
+        vinculo = vinculo.replace("/content/register.xhtml", "/content/message.xhtml");
+        emailer.setVinculo(vinculo);
+
+        //Se configuran los datos del participante
+        DateFormat formatFecha = DateFormat.getDateInstance(DateFormat.FULL);
+        SimpleDateFormat formatHora = new SimpleDateFormat("hh:mm:ss aa");
+        emailer.setPara(persona.getEmail());
+        emailer.setNombre(persona.getNombre() + " " + persona.getApellido());
+        emailer.setHorario(formatFecha.format(current.getFecha()) + "  a las " + formatHora.format(current.getHora()) + " en " + current.getLugar());
+        emailer.setIdPersona(persona.getId().toString());
+        emailer.setIdCurso(current.getId().toString());
+        //Se envía la información!
+        emailer.send();
     }
 
     public String create() {
@@ -283,6 +329,7 @@ public class CursoController implements Serializable {
         nombre = null;
         apellido = null;
         email = null;
+        showProgressBar = false;
     }
 
     private void recreatePagination() {
@@ -329,6 +376,14 @@ public class CursoController implements Serializable {
         return idSelectedCurso;
     }
 
+    public boolean isShowProgressBar() {
+        return showProgressBar;
+    }
+
+    public void setShowProgressBar(boolean showProgressBar) {
+        this.showProgressBar = showProgressBar;
+    }
+
     public void setIdSelectedCurso(int idSelectedCurso) {
         this.idSelectedCurso = idSelectedCurso;
     }
@@ -349,9 +404,9 @@ public class CursoController implements Serializable {
         if (listCurso == null) {
             listCurso = ejbCursoFacadeExt.getCursosActivos();
             for (Curso option : listCurso) {
-                if(option.getCapacidad() != null){
+                if (option.getCapacidad() != null) {
                     capacidad = option.getCapacidad();
-                }else{
+                } else {
                     capacidad = 0;
                 }
                 inscritos = ejbPersonaCursoFacadeExt.findInscritos(option);
@@ -364,23 +419,6 @@ public class CursoController implements Serializable {
 
     public void setListCurso(List<Curso> listCurso) {
         this.listCurso = listCurso;
-    }
-
-    public Boolean getProgressRender() {
-        return progressRender;
-    }
-
-    public void setProgressRender(Boolean progressRender) {
-        this.progressRender = progressRender;
-    }
-
-    public Integer getProgessValue() {
-        return progressValue;
-    }
-
-    public void setProgessValue(Integer ProgessValue) {
-        this.progressValue = ProgessValue;
-        System.out.println(ProgessValue);
     }
 
     @FacesConverter(forClass = Curso.class)

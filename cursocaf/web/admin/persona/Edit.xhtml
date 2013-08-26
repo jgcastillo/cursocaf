@@ -1,21 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.EditPersonaTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <p:panel id="panel" header="Editar Persona" style="width: 40%; margin-left: 30%; margin-right: 30%">
+    <ui:define name="title">
+        Configuración de Personas
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="editarPersonas">
+                <p:panel id="panel" header="Editar Persona" style="width: 60%; margin-left: 10%;">
                     <h:panelGrid columns="3">
                         <p:outputLabel value="#{bundle.EditPersonaLabel_nombre}" for="nombre" />
                         <p:inputText id="nombre" value="#{personaController.selected.nombre}" title="#{bundle.EditPersonaTitle_nombre}" required="true" requiredMessage="#{bundle.EditPersonaRequiredMessage_nombre}"/>
@@ -31,12 +29,12 @@
                         <p:message for="psw"/>
                     </h:panelGrid>
                     <f:facet name="footer">
-                        <h:panelGrid columns="3" style="width: 25%; margin-left: 50%; margin-right: 25%">
+                        <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
                             <p:commandButton value="Guardar" 
                                              action="#{personaController.update}"
                                              ajax="true" update="panel"
                                              icon="ui-icon-disk"/>
-                            <p:spacer width="20"/>
+                            <p:spacer width="5"/>
                             <p:commandButton value="Cancelar" 
                                              action="#{personaController.prepareList}"
                                              immediate="true"
@@ -50,4 +48,3 @@
         </ui:define>
     </ui:composition>
 
-</html>

@@ -1,44 +1,37 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <f:metadata>
-          <f:viewParam name="email" value="#{messageController.email}" />
-        <f:viewParam name="idPersona" value="#{messageController.idPersona}" />
-        <f:viewParam name="idCurso" value="#{messageController.idCurso}" />
-    </f:metadata>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <h:head>
-        <title>Facelet Title</title>
-        <h:outputStylesheet name="css/jsfcrud.css"/>
-    </h:head>
-    <h:body>
-        <h:form id="listCursos"> 
-            <h:form>
+    <ui:define name="title">
+        Mensaje de Confirmación
+    </ui:define>
+
+    <ui:define name="content">
+            <h:form id="message">
                 <p:panel id="panel" header="Mensaje" style="margin-top:50px; width:60%; margin-left: 20%; margin-right: 20%">
-
 
                     <h:panelGroup rendered="#{messageController.valid}" id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green"  layout="table"/>
-                         <p>Ha concluido su registro exitosamente!</p> 
+                        <h:outputText value="Su Registro ha concluído exitósamente!"/>
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{!messageController.valid}" id="messagePanel2" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                         <p>Chequee su correo electrónico y confirme su asistencia al curso!</p> 
+<!--                        <h:outputText value="Revise su correo electrónico y confirme su asistencia al curso!"/>-->
                     </h:panelGroup>
                     <f:facet name="footer">
-                        <h:panelGrid columns="3" style="display:block;margin-left: 50%">
+                        <h:panelGrid columns="3" style="display:block;margin-left: 80%">
                             <p:commandButton value="Aceptar" title="Aceptar" icon="ui-icon-disk" immediate="true"
                                              action="/index"/>
                         </h:panelGrid>
                     </f:facet>
                 </p:panel>
             </h:form>
-        </h:form>
-    </h:body>
+       </ui:define>
+    </ui:composition>
 
-
-</html>
