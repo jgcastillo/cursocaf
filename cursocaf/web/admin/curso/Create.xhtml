@@ -23,8 +23,8 @@
                         <p:message for="fecha"/>
                         <p:outputLabel value="#{bundle.CreateCursoLabel_hora}" for="hora" />
                         <p:calendar id="hora" value="#{cursoController.selected.hora}" title="#{bundle.CreateCursoTitle_hora}"
-                                pattern="HH:mm:ss a" timeOnly="true" required="true" requiredMessage="Seleccione la hora del Curso"/> 
-                       
+                                    pattern="HH:mm:ss a" timeOnly="true" required="true" requiredMessage="Seleccione la hora del Curso"/> 
+
                         <p:message for="hora"/>
                         <p:outputLabel value="#{bundle.CreateCursoLabel_lugar}" for="lugar" />
                         <p:inputText id="lugar" value="#{cursoController.selected.lugar}" title="#{bundle.CreateCursoTitle_lugar}" />

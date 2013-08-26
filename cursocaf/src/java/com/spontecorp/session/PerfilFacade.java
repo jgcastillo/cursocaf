@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class PerfilFacade extends AbstractFacade<Perfil> {
+
     @PersistenceContext(unitName = "cursocafPU")
     private EntityManager em;
 
@@ -26,5 +27,4 @@ public class PerfilFacade extends AbstractFacade<Perfil> {
     public PerfilFacade() {
         super(Perfil.class);
     }
-    
 }
