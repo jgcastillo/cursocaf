@@ -1,76 +1,60 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListPersonaCursoTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListPersonaCursoEmpty}" rendered="#{personaCursoController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{personaCursoController.items.rowCount > 0}">
-                    <h:outputText value="#{personaCursoController.pagination.pageFirstItem + 1}..#{personaCursoController.pagination.pageLastItem + 1}/#{personaCursoController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{personaCursoController.previous}" value="#{bundle.Previous} #{personaCursoController.pagination.pageSize}" rendered="#{personaCursoController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{personaCursoController.next}" value="#{bundle.Next} #{personaCursoController.pagination.pageSize}" rendered="#{personaCursoController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{personaCursoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaCursoTitle_id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaCursoTitle_fecha}"/>
-                            </f:facet>
+    <ui:define name="title">
+        Status de Personas en los Cursos
+    </ui:define>
+
+    <ui:define name="content">
+            <h:form id="statusCurso">
+                <p:panel header="Status de Personas en los Cursos" style="width: 90%;"> 
+                    <p:dataTable id="cursos" value="#{personaCursoController.items}" var="item" style="width:90%; margin-left: 5%; margin-right: 5%"
+                                 paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
+                        <p:column headerText="Fecha Regístro" style="text-align: center">
                             <h:outputText value="#{item.fecha}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaCursoTitle_status}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.status}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaCursoTitle_personaId}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.personaId}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListPersonaCursoTitle_cursoId}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.cursoId}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{personaCursoController.prepareView}" value="#{bundle.ListPersonaCursoViewLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{personaCursoController.prepareEdit}" value="#{bundle.ListPersonaCursoEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{personaCursoController.destroy}" value="#{bundle.ListPersonaCursoDestroyLink}"/>
-                        </h:column>
-                    </h:dataTable>
-                </h:panelGroup>
-                <br />
-                <h:commandLink action="#{personaCursoController.prepareCreate}" value="#{bundle.ListPersonaCursoCreateLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListPersonaCursoIndexLink}"/>
+                        </p:column>
+                        <p:column headerText="Nombre y Apellido" style="text-align: center">
+                            <h:outputText value="#{item.personaId.nombre} #{item.personaId.apellido}" />
+                        </p:column>
+                        <p:column headerText="email" style="text-align: center">
+                            <h:outputText value="#{item.personaId.email}" />
+                        </p:column>
+                        <p:column headerText="Fecha Curso" style="text-align: center">
+                            <h:outputText value="#{item.cursoId.fecha}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" /> 
+                            </h:outputText>
+                        </p:column>
+                         <p:column headerText="Hora Curso" style="text-align: center">
+                            <h:outputText value="#{item.cursoId.hora}">
+                                <f:convertDateTime pattern="HH:mm:ss" /> 
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Status" style="text-align: center">
+                            <h:outputText value="PENDIENTE" rendered="#{item.status==1}" />
+                            <h:outputText value="INSCRITO" rendered="#{item.status==2}" />
+                            <h:outputText value="ASISTIO" rendered="#{item.status==3}" />
+                            <h:outputText value="NO ASISTIO" rendered="#{item.status==4}" />
+                        </p:column>
+                        <p:column headerText="Acción" style="text-align: center;">
+                            <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{personaCursoController.prepareEdit}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                </p:panel>
+
             </h:form>
         </ui:define>
     </ui:composition>
 
-</html>
+

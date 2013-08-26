@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-       <ui:composition template="/template.xhtml">
+
+    <ui:composition template="/template.xhtml">
         <ui:define name="title">
             <h:outputText value=""></h:outputText>
         </ui:define>
@@ -49,16 +50,16 @@
 
                     <f:facet name="footer">
                         <h:panelGrid columns="3" style="width: 25%; margin-left: 50%; margin-right: 25%">
-                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk"
-                                             action="#{cursoController.registerPerson}" 
-                                             onclick="pbAjax.start();"  ajax="true" update="panel"/>
+                            <p:commandButton value="Guardar" title="Guardar" icon="ui-icon-disk" 
+                                             action="#{cursoController.registerPerson}" oncomplete="pbAjax.start();" ajax="true" update="panel"/>
                             <p:spacer width="10"/>
-                            <p:commandButton value="Cancelar" style="" title="Cancelar" icon="ui-icon-cancel" immediate="true"
+                            <p:commandButton value="Cancelar" title="Cancelar" icon="ui-icon-cancel" immediate="true"
                                              action="/index" />
                         </h:panelGrid>     
                     </f:facet>
-                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{cursoController.progressValue}"/>  
-
+                    <p:progressBar ajax="true" styleClass="animated" rendered="#{cursoController.progressRender}" 
+                                   labelTemplate="{value}%"  value="#{cursoController.progessValue}" widgetVar="pbAjax" 
+                                    />
                 </p:panel>            
             </h:form>
         </ui:define>

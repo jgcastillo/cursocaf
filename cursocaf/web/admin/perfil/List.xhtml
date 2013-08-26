@@ -1,25 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="Perfiles"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <p:panel header="Configuración de Perfiles" style="width: 60%; margin-left: 20%; margin-right: 20%">
+    <ui:define name="title">
+        Configuración de Perfiles
+    </ui:define>
+
+    <ui:define name="content">
+            <h:form id="perfiles">
+                <p:panel header="Configuración de Perfiles" style="width: 60%; margin-left: 10%; margin-right: 10%">
                     <p:dataTable id="cursos" value="#{perfilController.items}" var="item" style="width:50%; margin-left: 25%; margin-right: 25%"
                                  paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
                         <f:facet name="header">
                             <p:commandButton value="Agregar" title="Agregar" icon="ui-icon-document" 
                                              action="#{perfilController.prepareCreate}"
-                                             style="display: block; text-align: right;"/>
+                                             style="margin-left: 5%;margin-right: 80%"/>
                         </f:facet>
                         <p:column headerText="Perfil">
                             <h:outputText value="#{item.nombre}" />
@@ -31,10 +32,8 @@
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
-                    <h:link outcome="/index" value="#{bundle.ListPerfilPersonaIndexLink}"/>
                 </p:panel>
             </h:form>
         </ui:define>
     </ui:composition>
 
-</html>

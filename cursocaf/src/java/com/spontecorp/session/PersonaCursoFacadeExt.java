@@ -66,4 +66,18 @@ public class PersonaCursoFacadeExt extends AbstractFacade<PersonaCurso> {
         q.setParameter("status", status);
         q.executeUpdate();
     }
+
+    /**
+     * 
+     * @param persona
+     * @return 
+     */
+    public PersonaCurso findPersonaCurso(Persona persona) {
+        String query = "SELECT pc from PersonaCurso pc WHERE pc.personaId = :persona";
+        Query q = getEntityManager().createQuery(query);
+        q.setParameter("persona", persona);
+        PersonaCurso personaCurso = (PersonaCurso) q.getResultList().get(0);
+
+        return personaCurso;
+    }
 }

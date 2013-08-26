@@ -1,48 +1,71 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.EditPersonaCursoTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
-            <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditPersonaCursoLabel_id}" for="id" />
-                    <h:inputText id="id" value="#{personaCursoController.selected.id}" title="#{bundle.EditPersonaCursoTitle_id}" required="true" requiredMessage="#{bundle.EditPersonaCursoRequiredMessage_id}"/>
-                    <h:outputLabel value="#{bundle.EditPersonaCursoLabel_fecha}" for="fecha" />
-                    <h:inputText id="fecha" value="#{personaCursoController.selected.fecha}" title="#{bundle.EditPersonaCursoTitle_fecha}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditPersonaCursoLabel_status}" for="status" />
-                    <h:inputText id="status" value="#{personaCursoController.selected.status}" title="#{bundle.EditPersonaCursoTitle_status}" />
-                    <h:outputLabel value="#{bundle.EditPersonaCursoLabel_personaId}" for="personaId" />
-                    <h:selectOneMenu id="personaId" value="#{personaCursoController.selected.personaId}" title="#{bundle.EditPersonaCursoTitle_personaId}" required="true" requiredMessage="#{bundle.EditPersonaCursoRequiredMessage_personaId}">
+    <ui:define name="title">
+        Editar Curso
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="editarPersonaCurso">
+            <p:panel id="panel" header="Editar Persona Curso" style="width: 60%; margin-left: 10%;">
+                <h:panelGrid columns="3">
+
+                    <h:outputLabel value="Persona" for="personaId" />
+                    <h:selectOneMenu id="personaId" value="#{personaCursoController.selected.personaId}" title="#{bundle.EditPersonaCursoTitle_personaId}" 
+                                     required="true" requiredMessage="#{bundle.EditPersonaCursoRequiredMessage_personaId}" disabled="true" style="width: 230px;">
                         <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
-                    <h:outputLabel value="#{bundle.EditPersonaCursoLabel_cursoId}" for="cursoId" />
-                    <h:selectOneMenu id="cursoId" value="#{personaCursoController.selected.cursoId}" title="#{bundle.EditPersonaCursoTitle_cursoId}" required="true" requiredMessage="#{bundle.EditPersonaCursoRequiredMessage_cursoId}">
-                        <f:selectItems value="#{cursoController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandLink action="#{personaCursoController.update}" value="#{bundle.EditPersonaCursoSaveLink}"/>
-                <br />
-                <br />
-                <h:link outcome="View" value="#{bundle.EditPersonaCursoViewLink}"/>
-                <br />
-                <h:commandLink action="#{personaCursoController.prepareList}" value="#{bundle.EditPersonaCursoShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.EditPersonaCursoIndexLink}" />
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                    <p:message for="personaId"/>
+                    
+                    <h:outputLabel value="Fecha del Regístro" for="fecha" />
+                    <h:inputText id="fecha" value="#{personaCursoController.selected.fecha}" title="#{bundle.EditPersonaCursoTitle_fecha}" disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:inputText>
+                    <p:message for="fecha"/>
 
-</html>
+                    <h:outputLabel value="Fecha del Curso" for="fecha1" />
+                    <h:inputText id="fecha1" value="#{personaCursoController.selected.cursoId.fecha}" title="#{bundle.EditPersonaCursoTitle_fecha}" disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:inputText>
+                    <p:message for="fecha1"/>
+
+                    <h:outputLabel value="Hora del Curso" for="hora" />
+                    <h:inputText id="hora" value="#{personaCursoController.selected.cursoId.hora}" title="#{bundle.EditPersonaCursoTitle_fecha}" disabled="true">
+                        <f:convertDateTime pattern="HH:mm:ss" />
+                    </h:inputText>
+                    <p:message for="hora"/>
+
+                    <h:outputLabel value="Status" for="status" />
+                    <h:selectOneMenu id="status" value="#{personaCursoController.selected.status}" required="true" 
+                                     requiredMessage="#{bundle.CreateCursoTitle_status}" style="width: 130px;">   
+                        <f:selectItem itemLabel="PENDIENTE" itemValue="1" />
+                        <f:selectItem itemLabel="INSCRITO" itemValue="2" />
+                        <f:selectItem itemLabel="ASISTIO" itemValue="3" />
+                        <f:selectItem itemLabel="NO ASISTIO" itemValue="4" />
+                    </h:selectOneMenu>
+                    <p:message for="status"/>
+
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
+                        <p:commandButton value="Guardar" 
+                                         action="#{personaCursoController.update}"
+                                         ajax="true" update="panel"
+                                         icon="ui-icon-disk"/>
+                        <p:spacer width="10"/>
+                        <p:commandButton value="Cancelar" 
+                                         action="#{personaCursoController.prepareList}"
+                                         immediate="true"
+                                         icon="ui-icon-cancel"/>
+                    </h:panelGrid>
+                </f:facet>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
