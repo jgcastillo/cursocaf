@@ -12,29 +12,37 @@
     </ui:define>
 
     <ui:define name="content">
-            <h:form id="editarPerfil">
-                <p:panel id="panel" header="Editar Perfil" style="width: 60%; margin-left: 10%;">
-                    <h:panelGrid columns="3">
-                        <p:outputLabel value="#{bundle.EditPerfilLabel_nombre}" for="nombre" />
-                        <p:inputText id="nombre" value="#{perfilController.selected.nombre}" title="#{bundle.EditPerfilTitle_nombre}" required="true" requiredMessage="#{bundle.EditPerfilRequiredMessage_nombre}"/>
-                        <p:message for="nombre"/>
+        <h:form id="editarPerfil">
+            <p:panel id="panel" header="Editar Perfil" style="width: 60%; margin-left: 10%;">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="#{bundle.EditPerfilLabel_nombre}" for="nombre" />
+                    <p:inputText id="nombre" value="#{perfilController.selected.nombre}" title="#{bundle.EditPerfilTitle_nombre}" required="true" requiredMessage="#{bundle.EditPerfilRequiredMessage_nombre}"/>
+                    <p:message for="nombre"/>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
+                        <p:commandButton value="Guardar" 
+                                         action="#{perfilController.update}"
+                                         ajax="true" update="panel"
+                                         icon="ui-icon-disk"/>
+                        <p:spacer width="20"/>
+                        <p:commandButton value="Cancelar" 
+                                         action="#{perfilController.prepareList}"
+                                         immediate="true"
+                                         icon="ui-icon-cancel"/>
                     </h:panelGrid>
-                    <f:facet name="footer">
-                        <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
-                            <p:commandButton value="Guardar" 
-                                             action="#{perfilController.update}"
-                                             ajax="true" update="panel"
-                                             icon="ui-icon-disk"/>
-                            <p:spacer width="20"/>
-                            <p:commandButton value="Cancelar" 
-                                             action="#{perfilController.prepareList}"
-                                             immediate="true"
-                                             icon="ui-icon-cancel"/>
-                        </h:panelGrid>
-                    </f:facet>
-                </p:panel>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+                </f:facet>
+            </p:panel>
+        </h:form>
+        <p:ajaxStatus style="right:45%; left:45%">  
+            <f:facet name="start">  
+                <h:graphicImage library="images" name="ajax-loader.gif" style="margin-top: 10px; margin-bottom: 0px; margin-left: 40%;margin-right: 45%"/>
+            </f:facet>  
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
+        </p:ajaxStatus>
+    </ui:define>
+</ui:composition>
 
 
