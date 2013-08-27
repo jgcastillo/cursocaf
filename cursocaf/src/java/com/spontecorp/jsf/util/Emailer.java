@@ -66,7 +66,7 @@ public class Emailer {
             message.setSubject(asunto);
             message.setFrom(new InternetAddress(de));
             setCuerpo();
-            message.setText(cuerpo);
+            message.setText(cuerpo, "UTF-8", "html");
             message.setSubject("Bienvenido al Sistema de Horarios de Cursos!");
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
 
@@ -91,6 +91,7 @@ public class Emailer {
 
 
         vinculo = vinculo + parametros;
+        vinculo = "<a href=" + vinculo + ">Click aqui!</a>";
         cuerpo = "Estimado/a " + nombre + ".\n"
                 + "Usted se ha inscrito en el curso pautado para el día " + horario + "\n\n"
                 + "Por favor entre el siguiente vínculo para confirmar su asistencia: "
