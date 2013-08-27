@@ -49,16 +49,18 @@ public class MessageController implements Serializable {
 
     public void chequear() {
         if (idPersona == null && idCurso == null) {
+            mensaje = "Su Registro ha concluído satisfactoriamente. \n "
+                    + "Chequee su correo electrónico y confirme su asistencia al curso.";
         } else {
             Persona per = ejbPersonaFacade.find(Integer.parseInt(idPersona));
             Curso cur = ejbCursoFacade.find(Integer.parseInt(idCurso));
             if (per == null && cur == null) {
+                mensaje = "Error al validar la información.";
 
-                mensaje = "Su Registro ha concluído satisfactoriamente. \n "
-                        + "Chequee su correo electrónico y confirme su asistencia al curso.";
             } else {
-
-                if (ejbPersonaCursoFacadeExt.findInscritos(cur) < cur.getCapacidad() + 1) {
+                int capacidad = cur.getCapacidad();
+                int cantinscritos = ejbPersonaCursoFacadeExt.findInscritos(cur);
+                if (cantinscritos < capacidad) {
                     ejbPersonaCursoFacadeExt.setStatusInscritos(per, cur, JpaUtilities.INSCRITO);
                     mensaje = "Se ha registrado exitosamente su inscripción en el curso.";
 
