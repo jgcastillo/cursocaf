@@ -81,7 +81,7 @@ public class LoginBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", "");
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error de Ingreso", "Credenciales no válidas");
-            result = "login?faces-redirect=true";
+            //result = "login?faces-redirect=true";
         }
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return result;
