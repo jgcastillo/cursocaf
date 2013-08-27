@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/layout.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.CreatePerfilPersonaTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
+    <ui:define name="title">
+        Configuración de Perfiles
+    </ui:define>
+
+    <ui:define name="content">
             <h:form>
-                <p:panel id="panel" header="Crear Perfil Persona" style="width: 40%; margin-left: 30%; margin-right: 30%">
+                <p:panel id="panel" header="Crear Perfil Persona" style="width: 60%; margin-left: 10%;">
                     <h:panelGrid columns="3">
                         <p:outputLabel value="#{bundle.CreatePerfilPersonaLabel_personaId}" for="personaId" />
                         <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.CreatePerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.CreatePerfilPersonaRequiredMessage_personaId}">
@@ -26,7 +27,7 @@
                         <p:message for="perfilId"/>
                     </h:panelGrid>
                     <f:facet name="footer">
-                        <h:panelGrid columns="3">
+                        <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
                             <p:commandButton value="Guardar" 
                                              action="#{perfilPersonaController.create}"
                                              ajax="true" update="panel"
@@ -46,5 +47,3 @@
             </h:form>
         </ui:define>
     </ui:composition>
-
-</html>
