@@ -153,6 +153,7 @@ public class PerfilController implements Serializable {
     }
 
     public DataModel getItems() {
+        recreateModel();
         if (items == null) {
             items = getPagination().createPageDataModel();
         }

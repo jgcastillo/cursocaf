@@ -153,6 +153,7 @@ public class PersonaController implements Serializable {
     }
 
     public DataModel getItems() {
+        recreateModel();
         if (items == null) {
             items = getPagination().createPageDataModel();
         }
