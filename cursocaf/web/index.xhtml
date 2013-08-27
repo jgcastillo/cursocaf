@@ -15,7 +15,7 @@
 
         <h:form id="listCursos"> 
 
-            <p:dataTable id="cursos" value="#{cursoController.listCurso}" var="item" style="width:90%; margin-left: 5%; margin-right: 5%"
+            <p:dataTable id="cursos" value="#{cursoController.listCurso}" var="item" style="width:90%; margin-left: 5%; margin-right: 5%;margin-bottom: 15px;"
                          paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
                 <f:facet name="header">
@@ -60,7 +60,6 @@
 
                 </p:column>
             </p:dataTable>
-
         </h:form>
     </ui:define>
 

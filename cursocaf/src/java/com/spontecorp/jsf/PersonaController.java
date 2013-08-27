@@ -3,6 +3,7 @@ package com.spontecorp.jsf;
 import com.spontecorp.entity.Persona;
 import com.spontecorp.jsf.util.JsfUtil;
 import com.spontecorp.jsf.util.PaginationHelper;
+import com.spontecorp.security.SecurePassword;
 import com.spontecorp.session.PersonaFacade;
 
 import java.io.Serializable;
@@ -97,6 +98,10 @@ public class PersonaController implements Serializable {
 
     public String update() {
         try {
+            if (current.getPsw().length() > 0) {
+                char[] password = (current.getPsw()).toCharArray();
+                current.setPsw(SecurePassword.encript(password));
+            }
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/resources/Bundle").getString("PersonaUpdated"));
             return prepareList();

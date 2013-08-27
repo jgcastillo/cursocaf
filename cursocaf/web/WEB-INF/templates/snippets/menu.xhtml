@@ -6,7 +6,7 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:body>
         <h:panelGroup >
-            <p style="font-weight: bold"> Bienvenido, Usuario</p>
+            <p style="font-weight: bold"> Bienvenido, #{loginBean.current.nombre} #{loginBean.current.apellido}</p>
         </h:panelGroup>
         <h:form>
             <p:panelMenu id="menu1">
@@ -22,7 +22,7 @@
             <p:panelMenu id="menu2">
                 <p:submenu label="Navegación">
                     <p:menuitem value="Principal" action="/index.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-home" />
-                    <p:menuitem value="Logout" action="/index.xhtml?faces-redirect=true" icon="ui-icon-power"/>
+                    <p:menuitem value="Logout" action="#{loginBean.logout}" ajax="false" icon="ui-icon-power"/>
                 </p:submenu>
             </p:panelMenu>
 

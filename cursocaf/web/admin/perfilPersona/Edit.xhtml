@@ -16,12 +16,12 @@
             <p:panel id="panel" header="Editar Perfil Persona" style="width: 60%; margin-left: 10%;">
                 <h:panelGrid columns="3">
                     <p:outputLabel value="Persona" for="personaId" />
-                    <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.EditPerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_personaId}">
+                    <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" style="width: 200px" title="#{bundle.EditPerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_personaId}">
                         <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <p:message for="personaId"/>
                     <p:outputLabel value="Perfil" for="perfilId" />
-                    <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" title="#{bundle.EditPerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_perfilId}">
+                    <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" style="width: 200px" title="#{bundle.EditPerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.EditPerfilPersonaRequiredMessage_perfilId}">
                         <f:selectItems value="#{perfilController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                     <p:message for="perfilId"/>

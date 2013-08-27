@@ -17,11 +17,11 @@
                     <p:dataTable id="cursos" value="#{perfilController.items}" var="item" style="width:50%; margin-left: 25%; margin-right: 25%"
                                  paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
-                        <f:facet name="header">
+<!--                        <f:facet name="header">
                             <p:commandButton value="Agregar" title="Agregar" icon="ui-icon-document" 
                                              action="#{perfilController.prepareCreate}"
                                              style="margin-left: 5%;margin-right: 80%"/>
-                        </f:facet>
+                        </f:facet>-->
                         <p:column headerText="Perfil">
                             <h:outputText value="#{item.nombre}" />
                         </p:column>
