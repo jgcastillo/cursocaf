@@ -12,38 +12,46 @@
     </ui:define>
 
     <ui:define name="content">
-            <h:form>
-                <p:panel id="panel" header="Crear Perfil Persona" style="width: 60%; margin-left: 10%;">
-                    <h:panelGrid columns="3">
-                        <p:outputLabel value="#{bundle.CreatePerfilPersonaLabel_personaId}" for="personaId" />
-                        <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.CreatePerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.CreatePerfilPersonaRequiredMessage_personaId}">
-                            <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
-                        </h:selectOneMenu>
-                        <p:message for="personaId"/>
-                        <p:outputLabel value="#{bundle.CreatePerfilPersonaLabel_perfilId}" for="perfilId" />
-                        <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" title="#{bundle.CreatePerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.CreatePerfilPersonaRequiredMessage_perfilId}">
-                            <f:selectItems value="#{perfilController.itemsAvailableSelectOne}"/>
-                        </h:selectOneMenu>
-                        <p:message for="perfilId"/>
+        <h:form>
+            <p:panel id="panel" header="Crear Perfil Persona" style="width: 60%; margin-left: 10%;">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="#{bundle.CreatePerfilPersonaLabel_personaId}" for="personaId" />
+                    <h:selectOneMenu id="personaId" value="#{perfilPersonaController.selected.personaId}" title="#{bundle.CreatePerfilPersonaTitle_personaId}" required="true" requiredMessage="#{bundle.CreatePerfilPersonaRequiredMessage_personaId}">
+                        <f:selectItems value="#{personaController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <p:message for="personaId"/>
+                    <p:outputLabel value="#{bundle.CreatePerfilPersonaLabel_perfilId}" for="perfilId" />
+                    <h:selectOneMenu id="perfilId" value="#{perfilPersonaController.selected.perfilId}" title="#{bundle.CreatePerfilPersonaTitle_perfilId}" required="true" requiredMessage="#{bundle.CreatePerfilPersonaRequiredMessage_perfilId}">
+                        <f:selectItems value="#{perfilController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <p:message for="perfilId"/>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
+                        <p:commandButton value="Guardar" 
+                                         action="#{perfilPersonaController.create}"
+                                         ajax="true" update="panel"
+                                         icon="ui-icon-disk"/>
+                        <p:spacer width="20"/>
+                        <p:commandButton value="Cancelar" 
+                                         action="#{perfilPersonaController.prepareList}"
+                                         immediate="true"
+                                         icon="ui-icon-cancel"/>
                     </h:panelGrid>
-                    <f:facet name="footer">
-                        <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
-                            <p:commandButton value="Guardar" 
-                                             action="#{perfilPersonaController.create}"
-                                             ajax="true" update="panel"
-                                             icon="ui-icon-disk"/>
-                            <p:spacer width="20"/>
-                            <p:commandButton value="Cancelar" 
-                                             action="#{perfilPersonaController.prepareList}"
-                                             immediate="true"
-                                             icon="ui-icon-cancel"/>
-                        </h:panelGrid>
-                    </f:facet>
-                </p:panel>
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
+                </f:facet>
+            </p:panel>
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
 
-            </h:form>
-        </ui:define>
-    </ui:composition>
+        </h:form>
+        <p:ajaxStatus style="right:45%; left:45%">  
+            <f:facet name="start">  
+                <h:graphicImage library="images" name="ajax-loader.gif" style="margin-top: 10px; margin-bottom: 0px; margin-left: 40%;margin-right: 45%"/>
+            </f:facet>  
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
+        </p:ajaxStatus>
+    </ui:define>
+</ui:composition>

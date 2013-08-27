@@ -12,56 +12,64 @@
     </ui:define>
 
     <ui:define name="content">
-         <h:form id="editarCurso">
+        <h:form id="editarCurso">
 
-                <p:panel id="panel" header="Editar Curso" style="width: 60%; margin-left: 10%;">
-                    <h:panelGrid columns="3">
-                        <p:outputLabel value="#{bundle.EditCursoLabel_fecha}" for="fecha" />
-                        <p:calendar id="fecha" value="#{cursoController.selected.fecha}"
-                                    title="#{bundle.CreateCursoTitle_fecha}" required="true" requiredMessage="Seleccione la Fecha del Curso"
-                                    pattern="dd/MM/yyyy"
-                                    style="width: 180px"/>
-                        <p:message for="fecha"/>
-                        <h:outputLabel value="#{bundle.EditCursoLabel_hora}" for="hora" />
-                        <p:calendar id="hora" value="#{cursoController.selected.hora}" title="#{bundle.CreateCursoTitle_hora}"
-                                    pattern="HH:mm:ss a" timeOnly="true" required="true" requiredMessage="Seleccione la hora del Curso"/> 
+            <p:panel id="panel" header="Editar Curso" style="width: 60%; margin-left: 10%;">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="#{bundle.EditCursoLabel_fecha}" for="fecha" />
+                    <p:calendar id="fecha" value="#{cursoController.selected.fecha}"
+                                title="#{bundle.CreateCursoTitle_fecha}" required="true" requiredMessage="Seleccione la Fecha del Curso"
+                                pattern="dd/MM/yyyy"
+                                style="width: 180px"/>
+                    <p:message for="fecha"/>
+                    <h:outputLabel value="#{bundle.EditCursoLabel_hora}" for="hora" />
+                    <p:calendar id="hora" value="#{cursoController.selected.hora}" title="#{bundle.CreateCursoTitle_hora}"
+                                pattern="HH:mm:ss a" timeOnly="true" required="true" requiredMessage="Seleccione la hora del Curso"/> 
 
-                        <p:message for="hora"/>
-                        <p:outputLabel value="#{bundle.EditCursoLabel_lugar}" for="lugar" />
-                        <p:inputText id="lugar" value="#{cursoController.selected.lugar}" title="#{bundle.EditCursoTitle_lugar}" />
-                        <p:message for="lugar"/>
-                        <p:outputLabel value="#{bundle.EditCursoLabel_descripcion}" for="descripcion" />
-                        <p:inputTextarea rows="4" cols="30" id="descripcion" value="#{cursoController.selected.descripcion}" title="#{bundle.EditCursoTitle_descripcion}" />
-                        <p:message for="descripcion"/>
-                        <p:outputLabel value="#{bundle.EditCursoLabel_capacidad}" for="capacidad" />
-                        <p:inputText id="capacidad" value="#{cursoController.selected.capacidad}" title="#{bundle.CreateCursoTitle_capacidad}" required="false">
-                            <f:convertNumber integerOnly="true" maxIntegerDigits="2"/>
-                        </p:inputText>
-                        <p:message for="capacidad"/>
-                        <p:outputLabel value="#{bundle.EditCursoLabel_status}" for="status" />
-                        <h:selectOneMenu id="status" value="#{cursoController.selected.status}" required="true" 
-                                         requiredMessage="#{bundle.CreateCursoTitle_status}" style="width: 130px;">   
-                            <f:selectItem itemLabel="Activo" itemValue="1" />
-                            <f:selectItem itemLabel="Inactivo" itemValue="0" />
-                        </h:selectOneMenu>
-                        <p:message for="status"/>
+                    <p:message for="hora"/>
+                    <p:outputLabel value="#{bundle.EditCursoLabel_lugar}" for="lugar" />
+                    <p:inputText id="lugar" value="#{cursoController.selected.lugar}" title="#{bundle.EditCursoTitle_lugar}" />
+                    <p:message for="lugar"/>
+                    <p:outputLabel value="#{bundle.EditCursoLabel_descripcion}" for="descripcion" />
+                    <p:inputTextarea rows="4" cols="30" id="descripcion" value="#{cursoController.selected.descripcion}" title="#{bundle.EditCursoTitle_descripcion}" />
+                    <p:message for="descripcion"/>
+                    <p:outputLabel value="#{bundle.EditCursoLabel_capacidad}" for="capacidad" />
+                    <p:inputText id="capacidad" value="#{cursoController.selected.capacidad}" title="#{bundle.CreateCursoTitle_capacidad}" required="false">
+                        <f:convertNumber integerOnly="true" maxIntegerDigits="2"/>
+                    </p:inputText>
+                    <p:message for="capacidad"/>
+                    <p:outputLabel value="#{bundle.EditCursoLabel_status}" for="status" />
+                    <h:selectOneMenu id="status" value="#{cursoController.selected.status}" required="true" 
+                                     requiredMessage="#{bundle.CreateCursoTitle_status}" style="width: 130px;">   
+                        <f:selectItem itemLabel="Activo" itemValue="1" />
+                        <f:selectItem itemLabel="Inactivo" itemValue="0" />
+                    </h:selectOneMenu>
+                    <p:message for="status"/>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
+                        <p:commandButton value="Guardar" 
+                                         action="#{cursoController.update}"
+                                         ajax="true" update="panel"
+                                         icon="ui-icon-disk"/>
+                        <p:spacer width="5"/>
+                        <p:commandButton value="Cancelar" 
+                                         action="#{cursoController.prepareList}"
+                                         immediate="true"
+                                         icon="ui-icon-cancel"/>
                     </h:panelGrid>
-                    <f:facet name="footer">
-                        <h:panelGrid columns="3" style="width: 25%; margin-left: 40%;">
-                            <p:commandButton value="Guardar" 
-                                             action="#{cursoController.update}"
-                                             ajax="true" update="panel"
-                                             icon="ui-icon-disk"/>
-                            <p:spacer width="5"/>
-                            <p:commandButton value="Cancelar" 
-                                             action="#{cursoController.prepareList}"
-                                             immediate="true"
-                                             icon="ui-icon-cancel"/>
-                        </h:panelGrid>
-                    </f:facet>
-                </p:panel>
+                </f:facet>
+            </p:panel>
 
-            </h:form>
-        </ui:define>
-    </ui:composition>
+        </h:form>
+        <p:ajaxStatus style="right:45%; left:45%">  
+            <f:facet name="start">  
+                <h:graphicImage library="images" name="ajax-loader.gif" style="margin-top: 10px; margin-bottom: 0px; margin-left: 40%;margin-right: 45%"/>
+            </f:facet>  
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
+        </p:ajaxStatus>
+    </ui:define>
+</ui:composition>
 
