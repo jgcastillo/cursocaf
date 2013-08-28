@@ -13,8 +13,8 @@
 
     <ui:define name="content">
             <h:form id="perfilPersona">
-                <p:panel header="Configuración de Perfiles por Personas" style="width: 60%; margin-left: 10%; margin-right: 10%">
-                    <p:dataTable id="cursos" value="#{perfilPersonaController.items}" var="item" style="width:50%; margin-left: 25%; margin-right: 25%"
+                <p:panel header="Configuración de Perfiles por Personas" style="width: 70%; margin-left: 10%; margin-right: 10%">
+                    <p:dataTable id="cursos" value="#{perfilPersonaController.items}" var="item" style="width:60%; margin-left: 25%; margin-right: 25%"
                                  paginator="true" rows="15" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15" paginatorPosition="bottom">
                         <f:facet name="header">
@@ -25,9 +25,15 @@
                         <p:column headerText="Nombre y Apellido">
                             <h:outputText value="#{item.personaId.nombre} #{item.personaId.apellido}" />
                         </p:column>
+                        
+                        <p:column headerText="Email">
+                            <h:outputText value="#{item.personaId.email}" />
+                        </p:column>
+                        
                         <p:column headerText="Perfil">
                             <h:outputText value="#{item.perfilId.nombre}" />
                         </p:column>
+                        
                         <p:column headerText="Acción" width="10%" style="text-align: center;">
                             <p:commandButton title="Editar" icon="ui-icon-pencil" action="#{perfilPersonaController.prepareEdit}"/>
                         </p:column>

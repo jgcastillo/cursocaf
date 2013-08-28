@@ -72,7 +72,7 @@ public class LoginBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", usuario);
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", usuario);
             if (current.getPerfilPersonaList().size() > 0) {
-                if (current.getPerfilPersonaList().get(0).getPerfilId().getId() == 1) {
+                if (current.getPerfilPersonaList().get(0).getPerfilId().getId() == 1 || current.getPerfilPersonaList().get(0).getPerfilId().getId() == 2) {
                     result = "index?faces-redirect=true";
                 } else {
                     result = "login?faces-redirect=true";
@@ -114,18 +114,24 @@ public class LoginBean implements Serializable {
         } else {
             return false;
         }
-
     }
 
-
-//    public boolean isInstructor() {
-//        String perfil = current.getPerfilPersonaList().get(0).getPerfilId().getNombre();
-//        if (perfil.equals("Instructor")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    public boolean isInstructor() {
+        if (current != null) {
+            if (current.getPerfilPersonaList().size() > 0) {
+                String perfil = current.getPerfilPersonaList().get(0).getPerfilId().getNombre();
+                if (perfil.equals("Instructor")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
     public void setAdmin(boolean admin) {
         this.admin = admin;

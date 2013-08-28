@@ -1,0 +1,27 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:body>
+        <h:panelGroup >
+            <p style="font-weight: bold"> Bienvenido, #{loginBean.current.nombre} #{loginBean.current.apellido}</p>
+        </h:panelGroup>
+        <h:form>
+            <p:panelMenu id="menu1">
+                <p:submenu label="Configuración"> 
+                    <p:menuitem value="Personas-Curso" action="/admin/personaCurso/List.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-person"/>
+                </p:submenu>
+            </p:panelMenu>
+
+            <p:panelMenu id="menu2">
+                <p:submenu label="Navegación">
+                    <p:menuitem value="Principal" action="/index.xhtml?faces-redirect=true" ajax="false" icon="ui-icon-home" />
+                    <p:menuitem value="Logout" action="#{loginBean.logout}" ajax="false" icon="ui-icon-power"/>
+                </p:submenu>
+            </p:panelMenu>
+
+        </h:form>
+    </h:body>
+</ui:composition>

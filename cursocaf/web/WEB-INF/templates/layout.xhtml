@@ -30,7 +30,13 @@
             <c:if test="#{loginBean.admin}" >
                 <p:layoutUnit position="west" size="200" header="Menu" resizable="false" 
                               closable="false" collapsible="true">
-                    <ui:include src="./snippets/menu.xhtml" />
+                    <ui:include src="./snippets/menuAdmin.xhtml" />
+                </p:layoutUnit>
+            </c:if>
+            <c:if test="#{loginBean.instructor}" >
+                <p:layoutUnit position="west" size="200" header="Menu" resizable="false" 
+                              closable="false" collapsible="true">
+                    <ui:include src="./snippets/menuInstructor.xhtml" />
                 </p:layoutUnit>
             </c:if>
             <p:layoutUnit position="center">
